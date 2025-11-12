@@ -99,9 +99,13 @@ public class PDInputProcessor implements InputProcessor {
 	}
 
 	@Override
-	public boolean scrolled(int amount) {
-		eventMouse.dispatch(new PDMouseEvent(amount));
+	public boolean scrolled(float amountX, float amountY) {
+		eventMouse.dispatch(new PDMouseEvent((int)amountY));
 		return true;
+	}
+
+	public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+		return touchUp(screenX, screenY, pointer, button);
 	}
 
 	public static class PDMouseEvent {
