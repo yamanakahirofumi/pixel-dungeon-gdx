@@ -12,7 +12,6 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: "eclipse"
     apply plugin: "idea"
 
     version = '1.7.1c'
@@ -117,6 +116,3 @@ project(":PD-classes") {
     }
 }
 
-tasks.eclipse.doLast {
-    delete ".project"
-}
