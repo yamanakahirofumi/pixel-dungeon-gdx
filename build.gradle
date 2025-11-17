@@ -72,8 +72,9 @@ project(":ios") {
 
     dependencies {
         implementation project(":core")
-        implementation "org.robovm:robovm-rt:${roboVMVersion}"
-        implementation "org.robovm:robovm-cocoatouch:${roboVMVersion}"
+        implementation project(":PD-classes")
+        implementation "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
+        implementation "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
         implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
     }

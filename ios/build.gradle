@@ -13,6 +13,5 @@ robovm {
     mainClassName = project.ext.mainClassName
     archs = "arm64"
     os = "ios"
-    target = "ios"
     iosSkipSigning = true
 }
