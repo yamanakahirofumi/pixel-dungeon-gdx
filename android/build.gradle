@@ -1,13 +1,12 @@
 android {
     namespace "com.watabou.pixeldungeon"
-    compileSdkVersion 34
-	defaultConfig {
-		applicationId appId
-		versionCode project.ext.versionCode
-		versionName version
+    defaultConfig {
+        applicationId appId
+        versionCode project.ext.versionCode
+        versionName version
         minSdkVersion 14
         targetSdkVersion 34
-	}
+    }
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'

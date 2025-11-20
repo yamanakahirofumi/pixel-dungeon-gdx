@@ -29,214 +29,215 @@ import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 public class CellSelector extends TouchArea {
-	public Listener listener = null;
-	
-	public boolean enabled;
-	
-	private float dragThreshold;
-	
-	public CellSelector( DungeonTilemap map ) {
-		super( map );
-		camera = map.camera();
-		
-		dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
-	}
-	
-	@Override
-	protected void onClick( PDInputProcessor.Touch touch ) {
-		if (dragging) {
-			
-			dragging = false;
-			
-		} else {
-			
-			select( ((DungeonTilemap)target).screenToTile( 
-				(int)touch.current.x, 
-				(int)touch.current.y ) );
-		}
-	}
+    public Listener listener = null;
 
-	@Override
-	public boolean onKeyDown(PDInputProcessor.Key key) {
+    public boolean enabled;
+
+    private final float dragThreshold;
+
+    public CellSelector(DungeonTilemap map) {
+        super(map);
+        camera = map.camera();
+
+        dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
+    }
+
+    @Override
+    protected void onClick(PDInputProcessor.Touch touch) {
+        if (dragging) {
+
+            dragging = false;
+
+        } else {
+
+            select(((DungeonTilemap) target).screenToTile(
+                    (int) touch.current.x,
+                    (int) touch.current.y));
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(PDInputProcessor.Key key) {
 
         switch (key.code) {
-        case Input.Keys.PLUS:
-            zoom( Camera.main.zoom + 1 );
-            return true;
-        case Input.Keys.MINUS:
-            zoom( Camera.main.zoom - 1 );
-            return true;
-        case Input.Keys.SLASH:
-            zoom( PixelScene.defaultZoom );
-            return true;
+            case Input.Keys.PLUS:
+                zoom(Camera.main.zoom + 1);
+                return true;
+            case Input.Keys.MINUS:
+                zoom(Camera.main.zoom - 1);
+                return true;
+            case Input.Keys.SLASH:
+                zoom(PixelScene.defaultZoom);
+                return true;
         }
 
-		boolean handled = true;
-		int x = 0, y = 0;
-		switch (key.code) {
-			case Input.Keys.UP:
-			case Input.Keys.NUMPAD_8:
-				y = -1;
-				break;
-			case Input.Keys.DOWN:
-			case Input.Keys.NUMPAD_2:
-				y = 1;
-				break;
-			case Input.Keys.LEFT:
-			case Input.Keys.NUMPAD_4:
-				x = -1;
-				break;
-			case Input.Keys.RIGHT:
-			case Input.Keys.NUMPAD_6:
-				x = 1;
-				break;
-			case Input.Keys.NUMPAD_7:
-				x = -1;
-				y = -1;
-				break;
-			case Input.Keys.NUMPAD_9:
-				x = 1;
-				y = -1;
-				break;
-			case Input.Keys.NUMPAD_1:
-				x = -1;
-				y = 1;
-				break;
-			case Input.Keys.NUMPAD_3:
-				x = 1;
-				y = 1;
-				break;
-			case Input.Keys.ENTER:
-				break;
-			default:
-				handled = false;
-				break;
-		}
+        boolean handled = true;
+        int x = 0, y = 0;
+        switch (key.code) {
+            case Input.Keys.UP:
+            case Input.Keys.NUMPAD_8:
+                y = -1;
+                break;
+            case Input.Keys.DOWN:
+            case Input.Keys.NUMPAD_2:
+                y = 1;
+                break;
+            case Input.Keys.LEFT:
+            case Input.Keys.NUMPAD_4:
+                x = -1;
+                break;
+            case Input.Keys.RIGHT:
+            case Input.Keys.NUMPAD_6:
+                x = 1;
+                break;
+            case Input.Keys.NUMPAD_7:
+                x = -1;
+                y = -1;
+                break;
+            case Input.Keys.NUMPAD_9:
+                x = 1;
+                y = -1;
+                break;
+            case Input.Keys.NUMPAD_1:
+                x = -1;
+                y = 1;
+                break;
+            case Input.Keys.NUMPAD_3:
+                x = 1;
+                y = 1;
+                break;
+            case Input.Keys.ENTER:
+                break;
+            default:
+                handled = false;
+                break;
+        }
 
-		if (handled) {
-			Point point = DungeonTilemap.tileToPoint(Dungeon.hero.pos);
-			point.x += x;
-			point.y += y;
-			select(DungeonTilemap.pointToTile(point));
-		}
+        if (handled) {
+            Point point = DungeonTilemap.tileToPoint(Dungeon.hero.pos);
+            point.x += x;
+            point.y += y;
+            select(DungeonTilemap.pointToTile(point));
+        }
 
-		return handled;
-	}
+        return handled;
+    }
 
-    private void zoom( float value ) {
-     //   value = Math.round( value );
+    private void zoom(float value) {
+        //   value = Math.round( value );
         if (value >= PixelScene.minZoom && value <= PixelScene.maxZoom) {
-            Camera.main.zoom( value );
+            Camera.main.zoom(value);
             PixelDungeon.zoom((int) (value - PixelScene.defaultZoom));
         }
     }
 
-	public void select( int cell ) {
-		if (enabled && listener != null && cell != -1) {
-			
-			listener.onSelect( cell );
-			GameScene.ready();
-			
-		} else {
-			
-			GameScene.cancel();
-			
-		}
-	}
-	
-	private boolean pinching = false;
-	private PDInputProcessor.Touch another;
-	private float startZoom;
-	private float startSpan;
-	
-	@Override
-	protected void onTouchDown( PDInputProcessor.Touch t ) {
+    public void select(int cell) {
+        if (enabled && listener != null && cell != -1) {
 
-		if (t != touch && another == null) {
-					
-			if (!touch.down) {
-				touch = t;
-				onTouchDown( t );
-				return;
-			}
-			
-			pinching = true;
-			
-			another = t;
-			startSpan = PointF.distance( touch.current, another.current );
-			startZoom = camera.zoom;
+            listener.onSelect(cell);
+            GameScene.ready();
 
-			dragging = false;
-		}
-	}
-	
-	@Override
-	protected void onTouchUp( PDInputProcessor.Touch t ) {
-		if (pinching && (t == touch || t == another)) {
-			
-			pinching = false;
-			
-			int zoom = Math.round( camera.zoom );
-			camera.zoom( zoom );
-			PixelDungeon.zoom( (int)(zoom - PixelScene.defaultZoom) );
-			
-			dragging = true;
-			if (t == touch) {
-				touch = another;
-			}
-			another = null;
-			lastPos.set( touch.current );
-		}
-	}	
-	
-	private boolean dragging = false;
-	private PointF lastPos = new PointF();
+        } else {
 
-	@Override
-	public boolean onMouseScroll(int scroll) {
-		zoom( camera.zoom + scroll / 10f );
-		return true;
-	}
+            GameScene.cancel();
 
-	@Override
-	protected void onDrag( PDInputProcessor.Touch t ) {
-		 
-		camera.target = null;
+        }
+    }
 
-		if (pinching) {
+    private boolean pinching = false;
+    private PDInputProcessor.Touch another;
+    private float startZoom;
+    private float startSpan;
 
-			float curSpan = PointF.distance( touch.current, another.current );
-			camera.zoom( GameMath.gate( 
-				PixelScene.minZoom, 
-				startZoom * curSpan / startSpan, 
-				PixelScene.maxZoom ) );
+    @Override
+    protected void onTouchDown(PDInputProcessor.Touch t) {
 
-		} else {
-		
-			if (!dragging && PointF.distance( t.current, t.start ) > dragThreshold) {
-				
-				dragging = true;
-				lastPos.set( t.current );
-				
-			} else if (dragging) {
-				camera.scroll.offset( PointF.diff( lastPos, t.current ).invScale( camera.zoom ) );
-				lastPos.set( t.current );	
-			}	
-		}
-		
-	}	
-	
-	public void cancel() {
-		
-		if (listener != null) {
-			listener.onSelect(null);
-		}
-		
-		GameScene.ready();
-	}
+        if (t != touch && another == null) {
 
-	public interface Listener {
-		void onSelect( Integer cell );
-		String prompt();
-	}
+            if (!touch.down) {
+                touch = t;
+                onTouchDown(t);
+                return;
+            }
+
+            pinching = true;
+
+            another = t;
+            startSpan = PointF.distance(touch.current, another.current);
+            startZoom = camera.zoom;
+
+            dragging = false;
+        }
+    }
+
+    @Override
+    protected void onTouchUp(PDInputProcessor.Touch t) {
+        if (pinching && (t == touch || t == another)) {
+
+            pinching = false;
+
+            int zoom = Math.round(camera.zoom);
+            camera.zoom(zoom);
+            PixelDungeon.zoom((int) (zoom - PixelScene.defaultZoom));
+
+            dragging = true;
+            if (t == touch) {
+                touch = another;
+            }
+            another = null;
+            lastPos.set(touch.current);
+        }
+    }
+
+    private boolean dragging = false;
+    private final PointF lastPos = new PointF();
+
+    @Override
+    public boolean onMouseScroll(int scroll) {
+        zoom(camera.zoom + scroll / 10f);
+        return true;
+    }
+
+    @Override
+    protected void onDrag(PDInputProcessor.Touch t) {
+
+        camera.target = null;
+
+        if (pinching) {
+
+            float curSpan = PointF.distance(touch.current, another.current);
+            camera.zoom(GameMath.gate(
+                    PixelScene.minZoom,
+                    startZoom * curSpan / startSpan,
+                    PixelScene.maxZoom));
+
+        } else {
+
+            if (!dragging && PointF.distance(t.current, t.start) > dragThreshold) {
+
+                dragging = true;
+                lastPos.set(t.current);
+
+            } else if (dragging) {
+                camera.scroll.offset(PointF.diff(lastPos, t.current).invScale(camera.zoom));
+                lastPos.set(t.current);
+            }
+        }
+
+    }
+
+    public void cancel() {
+
+        if (listener != null) {
+            listener.onSelect(null);
+        }
+
+        GameScene.ready();
+    }
+
+    public interface Listener {
+        void onSelect(Integer cell);
+
+        String prompt();
+    }
 }

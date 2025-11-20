@@ -18,8 +18,8 @@ allprojects {
     ext {
         versionCode = 59
         appName = 'pixel-dungeon'
-	    appTitle = 'Pixel Dungeon'
-	    appId = 'com.watabou.pixeldungeon'
+        appTitle = 'Pixel Dungeon'
+        appId = 'com.watabou.pixeldungeon'
         gdxVersion = '1.12.1'
         roboVMVersion = '2.3.20'
         gdxControllersVersion = '2.2.4'
@@ -34,7 +34,7 @@ allprojects {
     }
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     sourceCompatibility = 11
     targetCompatibility = 11
 }
@@ -45,7 +45,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-		implementation project(":PD-classes")
+        implementation project(":PD-classes")
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
@@ -100,7 +100,7 @@ project(":core") {
 
 
     dependencies {
-	    implementation project(":PD-classes")
+        implementation project(":PD-classes")
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
     }
@@ -113,7 +113,7 @@ project(":PD-classes") {
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
-	    implementation "org.json:json:20250517"
+        implementation "org.json:json:20250517"
     }
 }
 

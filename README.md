@@ -14,4 +14,5 @@ Do `./gradlew <task>` to compile and run the project, where `task` is:
 * HTML: `html:superDev` (this doesn't work yet, some classes need to be changed)
 * Generate IDEA project: `idea`
 
-For more info about those and other tasks: https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#running-the-html-project
+For more info about those and other
+tasks: https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline#running-the-html-project

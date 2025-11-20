@@ -26,15 +26,15 @@ import com.watabou.pixeldungeon.effects.particles.PoisonParticle;
 
 public class PoisonTrap {
 
-	// 0xBB66EE
-	
-	public static void trigger( int pos, Char ch ) {
-		
-		if (ch != null) {
-			Buff.affect( ch, Poison.class ).set( 5 + Math.min( Dungeon.depth, 15 ) );
-		}
-		
-		CellEmitter.center( pos ).burst( PoisonParticle.SPLASH, 3 );
-		
-	}
+    // 0xBB66EE
+
+    public static void trigger(int pos, Char ch) {
+
+        if (ch != null) {
+            Buff.affect(ch, Poison.class).set(5 + Math.min(Dungeon.depth, 15));
+        }
+
+        CellEmitter.center(pos).burst(PoisonParticle.SPLASH, 3);
+
+    }
 }

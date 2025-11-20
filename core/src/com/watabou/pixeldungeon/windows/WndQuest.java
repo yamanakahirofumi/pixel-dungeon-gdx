@@ -21,8 +21,8 @@ import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.utils.Utils;
 
 public class WndQuest extends WndTitledMessage {
-	
-	public WndQuest( Mob.NPC questgiver, String text ) {
-		super( questgiver.sprite(), Utils.capitalize( questgiver.name ), text );
-	}
+
+    public WndQuest(Mob.NPC questgiver, String text) {
+        super(questgiver.sprite(), Utils.capitalize(questgiver.name), text);
+    }
 }

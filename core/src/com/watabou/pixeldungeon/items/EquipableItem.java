@@ -24,45 +24,46 @@ import com.watabou.pixeldungeon.effects.particles.ShadowParticle;
 
 public abstract class EquipableItem extends Item {
 
-	public static final String AC_EQUIP		= "EQUIP";
-	public static final String AC_UNEQUIP	= "UNEQUIP";
-	
-	@Override
-	public void execute( Hero hero, String action ) {
-		if (action.equals( AC_EQUIP )) {
-			doEquip( hero );
-		} else if (action.equals( AC_UNEQUIP )) {
-			doUnequip( hero, true );
-		} else {
-			super.execute( hero, action );
-		}
-	}
-	
-	@Override
-	public void doDrop( Hero hero ) {
-		if (!isEquipped( hero ) || doUnequip( hero, false )) {
-			super.doDrop( hero );
-		}
-	}
-	
-	@Override
-	public void cast( final Hero user, int dst ) {
-		
-		if (isEquipped( user )) {
-			
-			if (quantity == 1 && !this.doUnequip( user, false )) {
-				return;
-			}
-		}
-		
-		super.cast( user, dst );
-	}
-	
-	protected static void equipCursed( Hero hero ) {
-		hero.sprite.emitter().burst( ShadowParticle.CURSE, 6 );
-		Sample.INSTANCE.play( Assets.SND_CURSED );
-	}
-	
-	public abstract boolean doEquip( Hero hero );
-	public abstract boolean doUnequip( Hero hero, boolean collect );
+    public static final String AC_EQUIP = "EQUIP";
+    public static final String AC_UNEQUIP = "UNEQUIP";
+
+    @Override
+    public void execute(Hero hero, String action) {
+        if (action.equals(AC_EQUIP)) {
+            doEquip(hero);
+        } else if (action.equals(AC_UNEQUIP)) {
+            doUnequip(hero, true);
+        } else {
+            super.execute(hero, action);
+        }
+    }
+
+    @Override
+    public void doDrop(Hero hero) {
+        if (!isEquipped(hero) || doUnequip(hero, false)) {
+            super.doDrop(hero);
+        }
+    }
+
+    @Override
+    public void cast(final Hero user, int dst) {
+
+        if (isEquipped(user)) {
+
+            if (quantity == 1 && !this.doUnequip(user, false)) {
+                return;
+            }
+        }
+
+        super.cast(user, dst);
+    }
+
+    protected static void equipCursed(Hero hero) {
+        hero.sprite.emitter().burst(ShadowParticle.CURSE, 6);
+        Sample.INSTANCE.play(Assets.SND_CURSED);
+    }
+
+    public abstract boolean doEquip(Hero hero);
+
+    public abstract boolean doUnequip(Hero hero, boolean collect);
 }

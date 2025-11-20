@@ -22,35 +22,35 @@ import com.watabou.pixeldungeon.items.rings.RingOfElements.Resistance;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
 
 public class Charm extends FlavourBuff {
-	
-	@Override
-	public boolean attachTo( Char target ) {
-		if (super.attachTo( target )) {
-			target.pacified = true;
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public void detach() {
-		target.pacified = false;
-		super.detach();
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.HEART;
-	}
-	
-	@Override
-	public String toString() {
-		return "Charmed";
-	}
-	
-	public static float durationFactor( Char ch ) {
-		Resistance r = ch.buff( Resistance.class );
-		return r != null ? r.durationFactor() : 1;
-	}
+
+    @Override
+    public boolean attachTo(Char target) {
+        if (super.attachTo(target)) {
+            target.pacified = true;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void detach() {
+        target.pacified = false;
+        super.detach();
+    }
+
+    @Override
+    public int icon() {
+        return BuffIndicator.HEART;
+    }
+
+    @Override
+    public String toString() {
+        return "Charmed";
+    }
+
+    public static float durationFactor(Char ch) {
+        Resistance r = ch.buff(Resistance.class);
+        return r != null ? r.durationFactor() : 1;
+    }
 }

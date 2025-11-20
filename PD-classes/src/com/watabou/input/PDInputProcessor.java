@@ -24,130 +24,127 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
 
 public class PDInputProcessor implements InputProcessor {
-	public static Signal<Key> eventKey = new Signal<>(true);
-	public static Signal<Touch> eventTouch = new Signal<>(true);
-	public static Signal<PDMouseEvent> eventMouse = new Signal<>(true);
-	public static IntMap<Touch> pointers = new IntMap<>();
-	
-	public static boolean modifier = false;
+    public static Signal<Key> eventKey = new Signal<>(true);
+    public static Signal<Touch> eventTouch = new Signal<>(true);
+    public static Signal<PDMouseEvent> eventMouse = new Signal<>(true);
+    public static IntMap<Touch> pointers = new IntMap<>();
 
-	@Override
-	public boolean keyDown(int keycode) {
-		switch (keycode) {
-		
-		case Input.Keys.VOLUME_DOWN:
-		case Input.Keys.VOLUME_UP:
-			return false;
-			
-		case Input.Keys.CONTROL_LEFT:
-		case Input.Keys.CONTROL_RIGHT:
-			modifier = true;
-			
-		default:
-			eventKey.dispatch( new Key( keycode, true ) );
-			return true;
-		}
-	}
+    public static boolean modifier = false;
 
-	@Override
-	public boolean keyUp(int keycode) {
-		switch (keycode) {
-		
-		case Input.Keys.VOLUME_DOWN:
-		case Input.Keys.VOLUME_UP:
-			return false;
-			
-		case Input.Keys.CONTROL_LEFT:
-		case Input.Keys.CONTROL_RIGHT:
-			modifier = false;
-			
-		default:
-			eventKey.dispatch( new Key( keycode, false ) );
-			return true;
-		}
-	}
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
 
-	@Override
-	public boolean keyTyped(char character) {
-		return false;
-	}
+            case Input.Keys.VOLUME_DOWN:
+            case Input.Keys.VOLUME_UP:
+                return false;
 
-	@Override
-	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		Touch touch = new Touch(screenX, screenY, pointer);
-		pointers.put(pointer, touch);
-		eventTouch.dispatch(touch);
-		return true;
-	}
+            case Input.Keys.CONTROL_LEFT:
+            case Input.Keys.CONTROL_RIGHT:
+                modifier = true;
 
-	@Override
-	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		eventTouch.dispatch(pointers.remove(pointer).up());
-		return true;
-	}
+            default:
+                eventKey.dispatch(new Key(keycode, true));
+                return true;
+        }
+    }
 
-	@Override
-	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		pointers.get(pointer).update(screenX, screenY, pointer);
-		eventTouch.dispatch(null);
-		return true;
-	}
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
 
-	@Override
-	public boolean mouseMoved(int screenX, int screenY) {
-		return false;
-	}
+            case Input.Keys.VOLUME_DOWN:
+            case Input.Keys.VOLUME_UP:
+                return false;
 
-	@Override
-	public boolean scrolled(float amountX, float amountY) {
-		eventMouse.dispatch(new PDMouseEvent((int)amountY));
-		return true;
-	}
+            case Input.Keys.CONTROL_LEFT:
+            case Input.Keys.CONTROL_RIGHT:
+                modifier = false;
 
-	public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-		return touchUp(screenX, screenY, pointer, button);
-	}
+            default:
+                eventKey.dispatch(new Key(keycode, false));
+                return true;
+        }
+    }
 
-	public static class PDMouseEvent {
-		// TODO: This should probably contain the position of the mouse as well to be used by 'mouseMoved'
-		public final int scroll;
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
 
-		public PDMouseEvent(int scroll) {
-			this.scroll = scroll;
-		}
-	}
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Touch touch = new Touch(screenX, screenY, pointer);
+        pointers.put(pointer, touch);
+        eventTouch.dispatch(touch);
+        return true;
+    }
 
-	public static class Key {
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        eventTouch.dispatch(pointers.remove(pointer).up());
+        return true;
+    }
 
-		public int code;
-		public boolean pressed;
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        pointers.get(pointer).update(screenX, screenY, pointer);
+        eventTouch.dispatch(null);
+        return true;
+    }
 
-		public Key(int code, boolean pressed) {
-			this.code = code;
-			this.pressed = pressed;
-		}
-	}
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
 
-	public static class Touch {
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        eventMouse.dispatch(new PDMouseEvent((int) amountY));
+        return true;
+    }
 
-		public PointF start;
-		public PointF current;
-		public boolean down;
+    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
+        return touchUp(screenX, screenY, pointer, button);
+    }
 
-		public Touch(int x, int y, int index) {
-			start = new PointF(x, y);
-			current = new PointF(x, y);
+    /**
+     * @param scroll TODO: This should probably contain the position of the mouse as well to be used by 'mouseMoved'
+     */
+    public record PDMouseEvent(int scroll) {
+    }
 
-			down = true;
-		}
+    public static class Key {
 
-		public void update(int x, int y, int index) {
-			current.set(x, y);
-		}
+        public int code;
+        public boolean pressed;
 
-		public Touch up() {
-			down = false;
-			return this;
-		}
-	}
+        public Key(int code, boolean pressed) {
+            this.code = code;
+            this.pressed = pressed;
+        }
+    }
+
+    public static class Touch {
+
+        public PointF start;
+        public PointF current;
+        public boolean down;
+
+        public Touch(int x, int y, int index) {
+            start = new PointF(x, y);
+            current = new PointF(x, y);
+
+            down = true;
+        }
+
+        public void update(int x, int y, int index) {
+            current.set(x, y);
+        }
+
+        public Touch up() {
+            down = false;
+            return this;
+        }
+    }
 }

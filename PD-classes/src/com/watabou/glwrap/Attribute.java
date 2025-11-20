@@ -17,32 +17,23 @@
 
 package com.watabou.glwrap;
 
-import java.nio.FloatBuffer;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
-public class Attribute {
+import java.nio.FloatBuffer;
 
-	private int location;
-	
-	public Attribute( int location ) {
-		this.location = location;
-	}
-	
-	public int location() {
-		return location;
-	}
-	
-	public void enable() {
-		Gdx.gl.glEnableVertexAttribArray( location );
-	}
-	
-	public void disable() {
-		Gdx.gl.glDisableVertexAttribArray( location );
-	}
-	
-	public void vertexPointer( int size, int stride, FloatBuffer ptr ) {
-		Gdx.gl.glVertexAttribPointer( location, size, GL20.GL_FLOAT, false, stride * Float.SIZE / 8, ptr );
-	}
+public record Attribute(int location) {
+
+
+    public void enable() {
+        Gdx.gl.glEnableVertexAttribArray(location);
+    }
+
+    public void disable() {
+        Gdx.gl.glDisableVertexAttribArray(location);
+    }
+
+    public void vertexPointer(int size, int stride, FloatBuffer ptr) {
+        Gdx.gl.glVertexAttribPointer(location, size, GL20.GL_FLOAT, false, stride * Float.SIZE / 8, ptr);
+    }
 }

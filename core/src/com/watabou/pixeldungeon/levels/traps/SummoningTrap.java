@@ -17,8 +17,6 @@
  */
 package com.watabou.pixeldungeon.levels.traps;
 
-import java.util.ArrayList;
-
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
@@ -29,60 +27,63 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
+
 public class SummoningTrap {
 
-	private static final float DELAY = 2f;
-	
-	private static final Mob DUMMY = new Mob() {};
-	
-	// 0x770088
-	
-	public static void trigger( int pos, Char c ) {
-		
-		if (Dungeon.bossLevel()) {
-			return;
-		}
-		
-		if (c != null) {
-			Actor.occupyCell( c );
-		}
-		
-		int nMobs = 1;
-		if (Random.Int( 2 ) == 0) {
-			nMobs++;
-			if (Random.Int( 2 ) == 0) {
-				nMobs++;
-			}
-		}
-		
-		// It's complicated here, because these traps can be activated in chain
-		
-		ArrayList<Integer> candidates = new ArrayList<Integer>();
-		
-		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
-			int p = pos + Level.NEIGHBOURS8[i];
-			if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
-				candidates.add( p );
-			}
-		}
-		
-		ArrayList<Integer> respawnPoints = new ArrayList<Integer>();
-		
-		while (nMobs > 0 && candidates.size() > 0) {
-			int index = Random.index( candidates );
-			
-			DUMMY.pos = candidates.get( index );
-			Actor.occupyCell( DUMMY );
-			
-			respawnPoints.add( candidates.remove( index ) );
-			nMobs--;
-		}
-		
-		for (Integer point : respawnPoints) {
-			Mob mob = Bestiary.mob( Dungeon.depth );
-			mob.state = Mob.State.WANDERING;
-			GameScene.add( mob, DELAY );
-			WandOfBlink.appear( mob, point );
-		}
-	}
+    private static final float DELAY = 2f;
+
+    private static final Mob DUMMY = new Mob() {
+    };
+
+    // 0x770088
+
+    public static void trigger(int pos, Char c) {
+
+        if (Dungeon.bossLevel()) {
+            return;
+        }
+
+        if (c != null) {
+            Actor.occupyCell(c);
+        }
+
+        int nMobs = 1;
+        if (Random.Int(2) == 0) {
+            nMobs++;
+            if (Random.Int(2) == 0) {
+                nMobs++;
+            }
+        }
+
+        // It's complicated here, because these traps can be activated in chain
+
+        ArrayList<Integer> candidates = new ArrayList<>();
+
+        for (int i = 0; i < Level.NEIGHBOURS8.length; i++) {
+            int p = pos + Level.NEIGHBOURS8[i];
+            if (Actor.findChar(p) == null && (Level.passable[p] || Level.avoid[p])) {
+                candidates.add(p);
+            }
+        }
+
+        ArrayList<Integer> respawnPoints = new ArrayList<>();
+
+        while (nMobs > 0 && candidates.size() > 0) {
+            int index = Random.index(candidates);
+
+            DUMMY.pos = candidates.get(index);
+            Actor.occupyCell(DUMMY);
+
+            respawnPoints.add(candidates.remove(index));
+            nMobs--;
+        }
+
+        for (Integer point : respawnPoints) {
+            Mob mob = Bestiary.mob(Dungeon.depth);
+            mob.state = Mob.State.WANDERING;
+            GameScene.add(mob, DELAY);
+            WandOfBlink.appear(mob, point);
+        }
+    }
 }

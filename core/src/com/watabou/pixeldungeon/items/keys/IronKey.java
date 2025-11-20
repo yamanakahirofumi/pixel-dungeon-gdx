@@ -25,51 +25,51 @@ import com.watabou.pixeldungeon.utils.Utils;
 
 public class IronKey extends Key {
 
-	private static final String TXT_FROM_DEPTH = "iron key from depth %d";
+    private static final String TXT_FROM_DEPTH = "iron key from depth %d";
 
-	public static int curDepthQunatity = 0;
-	
-	{
-		name = "iron key";
-		image = ItemSpriteSheet.IRON_KEY;
-	}
-	
-	public IronKey() {
-		this( 0 );
-	}
-	
-	public IronKey( int depth ) {
-		super();
-		this.depth = depth;
-	}
-	
-	@Override
-	public boolean collect( Bag bag ) {
-		boolean result = super.collect( bag );
-		if (result && depth == Dungeon.depth && Dungeon.hero != null) {
-			Dungeon.hero.belongings.countIronKeys();
-		}
-		return result;
-	}
-	
-	@Override
-	public Item detach( Bag  bag ) {
-		Item result = super.detach( bag );
-		if (result != null && depth == Dungeon.depth) {
-			Dungeon.hero.belongings.countIronKeys();
-		}
-		return result;
-	}
-	
-	@Override
-	public String toString() {
-		return Utils.format( TXT_FROM_DEPTH, depth );
-	}
-	
-	@Override
-	public String info() {
-		return 
-			"The notches on this ancient iron key are well worn; its leather lanyard " +
-			"is battered by age. What door might it open?";
-	}
+    public static int curDepthQunatity = 0;
+
+    {
+        name = "iron key";
+        image = ItemSpriteSheet.IRON_KEY;
+    }
+
+    public IronKey() {
+        this(0);
+    }
+
+    public IronKey(int depth) {
+        super();
+        this.depth = depth;
+    }
+
+    @Override
+    public boolean collect(Bag bag) {
+        boolean result = super.collect(bag);
+        if (result && depth == Dungeon.depth && Dungeon.hero != null) {
+            Dungeon.hero.belongings.countIronKeys();
+        }
+        return result;
+    }
+
+    @Override
+    public Item detach(Bag bag) {
+        Item result = super.detach(bag);
+        if (result != null && depth == Dungeon.depth) {
+            Dungeon.hero.belongings.countIronKeys();
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return Utils.format(TXT_FROM_DEPTH, depth);
+    }
+
+    @Override
+    public String info() {
+        return
+                "The notches on this ancient iron key are well worn; its leather lanyard " +
+                "is battered by age. What door might it open?";
+    }
 }

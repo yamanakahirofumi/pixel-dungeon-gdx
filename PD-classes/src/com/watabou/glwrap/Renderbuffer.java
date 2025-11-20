@@ -25,33 +25,33 @@ import java.nio.IntBuffer;
 
 public class Renderbuffer {
 
-	public static final int RGBA8		= GL20.GL_RGBA;	// ?
-	public static final int DEPTH16		= GL20.GL_DEPTH_COMPONENT16;
-	public static final int STENCIL8	= GL20.GL_STENCIL_INDEX8;
-	
-	private int id;
-	
-	public Renderbuffer() {
-		IntBuffer buf = BufferUtils.newIntBuffer(1);
-		Gdx.gl.glGenRenderbuffers( 1, buf );
-		id = buf.get();
-	}
-	
-	public int id() {
-		return id;
-	}
-	
-	public void bind() {
-		Gdx.gl.glBindRenderbuffer( GL20.GL_RENDERBUFFER, id );
-	}
-	
-	public void delete() {
-		IntBuffer buf = BufferUtils.newIntBuffer(1);
-		buf.put(id);
-		Gdx.gl.glDeleteRenderbuffers( 1, buf );
-	}
-	
-	public void storage( int format, int width, int height ) {
-		Gdx.gl.glRenderbufferStorage( GL20.GL_RENDERBUFFER, format , width, height );
-	}
+    public static final int RGBA8 = GL20.GL_RGBA;    // ?
+    public static final int DEPTH16 = GL20.GL_DEPTH_COMPONENT16;
+    public static final int STENCIL8 = GL20.GL_STENCIL_INDEX8;
+
+    private final int id;
+
+    public Renderbuffer() {
+        IntBuffer buf = BufferUtils.newIntBuffer(1);
+        Gdx.gl.glGenRenderbuffers(1, buf);
+        id = buf.get();
+    }
+
+    public int id() {
+        return id;
+    }
+
+    public void bind() {
+        Gdx.gl.glBindRenderbuffer(GL20.GL_RENDERBUFFER, id);
+    }
+
+    public void delete() {
+        IntBuffer buf = BufferUtils.newIntBuffer(1);
+        buf.put(id);
+        Gdx.gl.glDeleteRenderbuffers(1, buf);
+    }
+
+    public void storage(int format, int width, int height) {
+        Gdx.gl.glRenderbufferStorage(GL20.GL_RENDERBUFFER, format, width, height);
+    }
 }

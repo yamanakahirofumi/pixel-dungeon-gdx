@@ -22,84 +22,94 @@ import com.watabou.noosa.TouchArea;
 
 public class Button extends Component {
 
-	public static float longClick = 1f;
-	
-	protected TouchArea hotArea;
+    public static float longClick = 1f;
 
-	protected boolean pressed;
-	protected float pressTime;
-	
-	protected boolean processed;
+    protected TouchArea hotArea;
+
+    protected boolean pressed;
+    protected float pressTime;
+
+    protected boolean processed;
 
     public int hotKey = -1;
-	
-	@Override
-	protected void createChildren() {
-		hotArea = new TouchArea( 0, 0, 0, 0 ) {
-			@Override
-			protected void onTouchDown(PDInputProcessor.Touch touch) {
-				pressed = true;
-				pressTime = 0;
-				processed = false;
-				Button.this.onTouchDown();
-			};
-			@Override
-			protected void onTouchUp(PDInputProcessor.Touch touch) {
-				pressed = false;
-				Button.this.onTouchUp();
-			};
-			@Override
-			protected void onClick( PDInputProcessor.Touch touch ) {
-				if (!processed) {
-					Button.this.onClick();
-				}
-			};
-			@Override
-			public boolean onKeyDown(PDInputProcessor.Key key) {
-				return Button.this.onKeyDown(key);
-			}
-			@Override
-			public boolean onKeyUp(PDInputProcessor.Key key) {
-				return Button.this.onKeyUp(key);
-			}
-		};
-		add( hotArea );
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		hotArea.active = visible;
-		
-		if (pressed) {
-			if ((pressTime += Game.elapsed) >= longClick) {
-				pressed = false;
-				if (onLongClick()) {
 
-					hotArea.reset();
-					processed = true;
-					onTouchUp();
-					
-					Game.vibrate( 50 );
-				}
-			}
-		}
-	}
-	
-	protected void onTouchDown() {};
-	protected void onTouchUp() {};
-	protected void onClick() {};
+    @Override
+    protected void createChildren() {
+        hotArea = new TouchArea(0, 0, 0, 0) {
+            @Override
+            protected void onTouchDown(PDInputProcessor.Touch touch) {
+                pressed = true;
+                pressTime = 0;
+                processed = false;
+                Button.this.onTouchDown();
+            }
+
+            @Override
+            protected void onTouchUp(PDInputProcessor.Touch touch) {
+                pressed = false;
+                Button.this.onTouchUp();
+            }
+
+            @Override
+            protected void onClick(PDInputProcessor.Touch touch) {
+                if (!processed) {
+                    Button.this.onClick();
+                }
+            }
+
+            @Override
+            public boolean onKeyDown(PDInputProcessor.Key key) {
+                return Button.this.onKeyDown(key);
+            }
+
+            @Override
+            public boolean onKeyUp(PDInputProcessor.Key key) {
+                return Button.this.onKeyUp(key);
+            }
+        };
+        add(hotArea);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        hotArea.active = visible;
+
+        if (pressed) {
+            if ((pressTime += Game.elapsed) >= longClick) {
+                pressed = false;
+                if (onLongClick()) {
+
+                    hotArea.reset();
+                    processed = true;
+                    onTouchUp();
+
+                    Game.vibrate(50);
+                }
+            }
+        }
+    }
+
+    protected void onTouchDown() {
+    }
+
+    protected void onTouchUp() {
+    }
+
+    protected void onClick() {
+    }
 
     protected boolean onLongClick() {
         return false;
-    };
+    }
 
-	protected boolean onKeyDown(PDInputProcessor.Key key) {
-		return false;
-	}
-	protected boolean onKeyUp(PDInputProcessor.Key key) {
-		if (active && key.code == hotKey) {
+    protected boolean onKeyDown(PDInputProcessor.Key key) {
+        return false;
+    }
+
+    protected boolean onKeyUp(PDInputProcessor.Key key) {
+        if (active && key.code == hotKey) {
             if (PDInputProcessor.modifier) {
                 return onLongClick();
             } else {
@@ -109,13 +119,13 @@ public class Button extends Component {
         } else {
             return false;
         }
-	}
-	
-	@Override
-	protected void layout() {
-		hotArea.x = x;
-		hotArea.y = y;
-		hotArea.width = width;
-		hotArea.height = height;
-	}
+    }
+
+    @Override
+    protected void layout() {
+        hotArea.x = x;
+        hotArea.y = y;
+        hotArea.width = width;
+        hotArea.height = height;
+    }
 }

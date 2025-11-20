@@ -25,99 +25,99 @@ import java.util.HashMap;
 
 public class TextureCache {
 
-	private static HashMap<Object, SmartTexture> all = new HashMap<Object, SmartTexture>();
+    private static final HashMap<Object, SmartTexture> all = new HashMap<>();
 
-	public static SmartTexture createSolid( int color ) {
-		String key = "1x1:" + color;
-		
-		if (all.containsKey( key )) {
-			
-			return all.get( key );
-			
-		} else {
+    public static SmartTexture createSolid(int color) {
+        String key = "1x1:" + color;
 
-			final Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-			// In the rest of the code ARGB is used
-			pixmap.setColor( (color << 8) | (color >>> 24) );
-			pixmap.fill();
-			GdxTexture bmp = new GdxTexture( pixmap );
+        if (all.containsKey(key)) {
 
-			SmartTexture tx = new SmartTexture( bmp );
-			all.put(key, tx);
+            return all.get(key);
 
-			return tx;
-		}
-	}
+        } else {
 
-	public static void add( Object key, SmartTexture tx ) {
-		all.put( key, tx );
-	}
+            final Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+            // In the rest of the code ARGB is used
+            pixmap.setColor((color << 8) | (color >>> 24));
+            pixmap.fill();
+            GdxTexture bmp = new GdxTexture(pixmap);
 
-	public static SmartTexture get( Object src ) {
-		
-		if (all.containsKey( src )) {
-			
-			return all.get( src );
-			
-		} else if (src instanceof SmartTexture) {
-			
-			return (SmartTexture)src;
-			
-		} else {
+            SmartTexture tx = new SmartTexture(bmp);
+            all.put(key, tx);
 
-			SmartTexture tx = new SmartTexture( getBitmap( src ) );
-			all.put( src, tx );
-			return tx;
-		}
-		
-	}
-	
-	public static void clear() {
-		
-		for (Texture txt:all.values()) {
-			txt.delete();
-		}
-		all.clear();
-		
-	}
-	
-	public static void reload() {
-		for (SmartTexture tx:all.values()) {
-			tx.reload();
-		}		
-	}
-	
-	public static GdxTexture getBitmap( Object src ) {
-		
-		try {
-			if (src instanceof Integer){
+            return tx;
+        }
+    }
 
-				// FIXME
-				throw new UnsupportedOperationException();
-				
-			} else if (src instanceof String) {
-				
-				return new GdxTexture((String)src);
-				
-			} else if (src instanceof GdxTexture) {
-				
-				return (GdxTexture)src;
-				
-			} else {
-				
-				return null;
-				
-			}
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-			return null;
-			
-		}
-	}
-	
-	public static boolean contains( Object key ) {
-		return all.containsKey( key );
-	}
-	
+    public static void add(Object key, SmartTexture tx) {
+        all.put(key, tx);
+    }
+
+    public static SmartTexture get(Object src) {
+
+        if (all.containsKey(src)) {
+
+            return all.get(src);
+
+        } else if (src instanceof SmartTexture) {
+
+            return (SmartTexture) src;
+
+        } else {
+
+            SmartTexture tx = new SmartTexture(getBitmap(src));
+            all.put(src, tx);
+            return tx;
+        }
+
+    }
+
+    public static void clear() {
+
+        for (Texture txt : all.values()) {
+            txt.delete();
+        }
+        all.clear();
+
+    }
+
+    public static void reload() {
+        for (SmartTexture tx : all.values()) {
+            tx.reload();
+        }
+    }
+
+    public static GdxTexture getBitmap(Object src) {
+
+        try {
+            if (src instanceof Integer) {
+
+                // FIXME
+                throw new UnsupportedOperationException();
+
+            } else if (src instanceof String) {
+
+                return new GdxTexture((String) src);
+
+            } else if (src instanceof GdxTexture) {
+
+                return (GdxTexture) src;
+
+            } else {
+
+                return null;
+
+            }
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return null;
+
+        }
+    }
+
+    public static boolean contains(Object key) {
+        return all.containsKey(key);
+    }
+
 }

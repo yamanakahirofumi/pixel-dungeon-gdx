@@ -17,9 +17,6 @@
  */
 package com.watabou.pixeldungeon.ui;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.badlogic.gdx.Input;
 import com.watabou.input.PDInputProcessor;
 import com.watabou.noosa.Camera;
@@ -31,177 +28,180 @@ import com.watabou.pixeldungeon.Chrome;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.utils.Signal;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Window extends Group implements Signal.Listener<PDInputProcessor.Key> {
 
-	protected int width;
-	protected int height;
-	
-	protected TouchArea blocker;
-	protected NinePatch chrome;
-	
-	public static final int TITLE_COLOR = 0xFFFF44;
-	
-	public Window() {
-		this( 0, 0, Chrome.get( Chrome.Type.WINDOW ) );
-	}
-	
-	public Window( int width, int height ) {
-		this( width, height, Chrome.get( Chrome.Type.WINDOW ) );
-	}
-			
-	public Window( int width, int height, NinePatch chrome ) {
-		super();
-		
-		blocker = new TouchArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
-			@Override
-			protected void onClick( PDInputProcessor.Touch touch ) {
-				if (!Window.this.chrome.overlapsScreenPoint( 
-					(int)touch.current.x, 
-					(int)touch.current.y )) {
-					
-					onBackPressed();
-				}
-			}
-		};
-		blocker.camera = PixelScene.uiCamera;
-		add( blocker );
-		
-		this.chrome = chrome;
-		
-		this.width = width;
-		this.height = height;
-		
-		chrome.x = -chrome.marginLeft();
-		chrome.y = -chrome.marginTop();
-		chrome.size( 
-			width - chrome.x + chrome.marginRight(),
-			height - chrome.y + chrome.marginBottom() );
-		add( chrome );
-		
-		camera = new Camera( 0, 0, 
-			(int)chrome.width, 
-			(int)chrome.height, 
-			PixelScene.defaultZoom );
-		camera.x = (int)(Game.width - camera.width * camera.zoom) / 2;
-		camera.y = (int)(Game.height - camera.height * camera.zoom) / 2;
-		camera.scroll.set( chrome.x, chrome.y );
-		Camera.add( camera );
+    protected int width;
+    protected int height;
 
-		PDInputProcessor.eventKey.add( this );
-	}
-	
-	public void resize( int w, int h ) {
-		this.width = w;
-		this.height = h;
-		
-		chrome.size( 
-			width + chrome.marginHor(),
-			height + chrome.marginVer() );
-		
-		camera.resize( (int)chrome.width, (int)chrome.height );
-		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
-		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
-	}
-	
-	public void hide() {
-		parent.erase( this );
-		destroy();
-	}
-	
-	@Override
-	public void destroy() {
-		super.destroy();
-		
-		Camera.remove( camera );
-		PDInputProcessor.eventKey.remove( this );
-	}
+    protected TouchArea blocker;
+    protected NinePatch chrome;
 
-	@Override
-	public void onSignal( PDInputProcessor.Key key ) {
-		if (key.pressed) {
-			switch (key.code) {
-			case Input.Keys.BACK:
-			case Input.Keys.ESCAPE:
-				onBackPressed();
-				break;
-			case Input.Keys.MENU:
-			case Input.Keys.F5:
-				onMenuPressed();
-				break;
-			default:
-				onKeyDown(key);
-				break;
-			}
-		}
+    public static final int TITLE_COLOR = 0xFFFF44;
 
-		PDInputProcessor.eventKey.cancel();
-	}
+    public Window() {
+        this(0, 0, Chrome.get(Chrome.Type.WINDOW));
+    }
 
-	protected void onKeyDown(PDInputProcessor.Key key) {
+    public Window(int width, int height) {
+        this(width, height, Chrome.get(Chrome.Type.WINDOW));
+    }
 
-	}
+    public Window(int width, int height, NinePatch chrome) {
+        super();
 
-	public void onBackPressed() {
-		hide();
-	}
-	
-	public void onMenuPressed() {
-	}
-	
-	protected static class Highlighter {
-		
-		private static final Pattern HIGHLIGHTER	= Pattern.compile( "_(.*?)_" );
-		private static final Pattern STRIPPER		= Pattern.compile( "[ \n]" );
-		
-		public String text;
-		
-		public boolean[] mask;
-		
-		public Highlighter( String text ) {
-			
-			String stripped = STRIPPER.matcher( text ).replaceAll( "" );
-			mask = new boolean[stripped.length()];
-			
-			Matcher m = HIGHLIGHTER.matcher( stripped );
-			
-			int pos = 0;
-			int lastMatch = 0;
-			
-			while (m.find()) {
-				pos += (m.start() - lastMatch);
-				int groupLen = m.group( 1 ).length();
-				for (int i=pos; i < pos + groupLen; i++) {
-					mask[i] = true;
-				}
-				pos += groupLen;
-				lastMatch = m.end();
-			}
-			
-			m.reset( text );
-			StringBuffer sb = new StringBuffer();
-			while (m.find()) {
-				m.appendReplacement( sb, m.group( 1 ) );
-			}
-			m.appendTail( sb );
-			
-			this.text = sb.toString();
-		}
-		
-		public boolean[] inverted() {
-			boolean[] result = new boolean[mask.length];
-			for (int i=0; i < result.length; i++) {
-				result[i] = !mask[i];
-			}
-			return result;
-		}
-		
-		public boolean isHighlighted() {
-			for (int i=0; i < mask.length; i++) {
-				if (mask[i]) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
+        blocker = new TouchArea(0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height) {
+            @Override
+            protected void onClick(PDInputProcessor.Touch touch) {
+                if (!Window.this.chrome.overlapsScreenPoint(
+                        (int) touch.current.x,
+                        (int) touch.current.y)) {
+
+                    onBackPressed();
+                }
+            }
+        };
+        blocker.camera = PixelScene.uiCamera;
+        add(blocker);
+
+        this.chrome = chrome;
+
+        this.width = width;
+        this.height = height;
+
+        chrome.x = -chrome.marginLeft();
+        chrome.y = -chrome.marginTop();
+        chrome.size(
+                width - chrome.x + chrome.marginRight(),
+                height - chrome.y + chrome.marginBottom());
+        add(chrome);
+
+        camera = new Camera(0, 0,
+                (int) chrome.width,
+                (int) chrome.height,
+                PixelScene.defaultZoom);
+        camera.x = (int) (Game.width - camera.width * camera.zoom) / 2;
+        camera.y = (int) (Game.height - camera.height * camera.zoom) / 2;
+        camera.scroll.set(chrome.x, chrome.y);
+        Camera.add(camera);
+
+        PDInputProcessor.eventKey.add(this);
+    }
+
+    public void resize(int w, int h) {
+        this.width = w;
+        this.height = h;
+
+        chrome.size(
+                width + chrome.marginHor(),
+                height + chrome.marginVer());
+
+        camera.resize((int) chrome.width, (int) chrome.height);
+        camera.x = (int) (Game.width - camera.screenWidth()) / 2;
+        camera.y = (int) (Game.height - camera.screenHeight()) / 2;
+    }
+
+    public void hide() {
+        parent.erase(this);
+        destroy();
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+
+        Camera.remove(camera);
+        PDInputProcessor.eventKey.remove(this);
+    }
+
+    @Override
+    public void onSignal(PDInputProcessor.Key key) {
+        if (key.pressed) {
+            switch (key.code) {
+                case Input.Keys.BACK:
+                case Input.Keys.ESCAPE:
+                    onBackPressed();
+                    break;
+                case Input.Keys.MENU:
+                case Input.Keys.F5:
+                    onMenuPressed();
+                    break;
+                default:
+                    onKeyDown(key);
+                    break;
+            }
+        }
+
+        PDInputProcessor.eventKey.cancel();
+    }
+
+    protected void onKeyDown(PDInputProcessor.Key key) {
+
+    }
+
+    public void onBackPressed() {
+        hide();
+    }
+
+    public void onMenuPressed() {
+    }
+
+    protected static class Highlighter {
+
+        private static final Pattern HIGHLIGHTER = Pattern.compile("_(.*?)_");
+        private static final Pattern STRIPPER = Pattern.compile("[ \n]");
+
+        public String text;
+
+        public boolean[] mask;
+
+        public Highlighter(String text) {
+
+            String stripped = STRIPPER.matcher(text).replaceAll("");
+            mask = new boolean[stripped.length()];
+
+            Matcher m = HIGHLIGHTER.matcher(stripped);
+
+            int pos = 0;
+            int lastMatch = 0;
+
+            while (m.find()) {
+                pos += (m.start() - lastMatch);
+                int groupLen = m.group(1).length();
+                for (int i = pos; i < pos + groupLen; i++) {
+                    mask[i] = true;
+                }
+                pos += groupLen;
+                lastMatch = m.end();
+            }
+
+            m.reset(text);
+            StringBuffer sb = new StringBuffer();
+            while (m.find()) {
+                m.appendReplacement(sb, m.group(1));
+            }
+            m.appendTail(sb);
+
+            this.text = sb.toString();
+        }
+
+        public boolean[] inverted() {
+            boolean[] result = new boolean[mask.length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = !mask[i];
+            }
+            return result;
+        }
+
+        public boolean isHighlighted() {
+            for (boolean b : mask) {
+                if (b) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

@@ -30,310 +30,315 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.scenes.CellSelector;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSprite;
-import com.watabou.pixeldungeon.windows.WndCatalogus;
 import com.watabou.pixeldungeon.windows.WndBag;
+import com.watabou.pixeldungeon.windows.WndCatalogus;
 
 public class Toolbar extends Component {
 
-	private Tool btnWait;
-	private Tool btnSearch;
-	private Tool btnInfo;
-	private Tool btnResume;
-	private Tool btnInventory;
-	private Tool btnQuick;
-	
-	private PickedUpItem pickedUp;
-	
-	private boolean lastEnabled = true;
-	
-	public Toolbar() {
-		super();
-		
-		height = btnInventory.height();
-	}
-	
-	@Override
-	protected void createChildren() {
-		
-		add( btnWait = new Tool( 0, 7, 20, 24, Input.Keys.SPACE ) {
-			
-			@Override
-			protected void onClick() {
-                restOneTurn();
-			}
-			protected boolean onLongClick() {
-				restFull();
-				return true;
-			}
+    private Tool btnWait;
+    private Tool btnSearch;
+    private Tool btnInfo;
+    private Tool btnResume;
+    private Tool btnInventory;
+    private Tool btnQuick;
 
-			private void restOneTurn() {
-				Dungeon.hero.rest( false );
-			}
+    private PickedUpItem pickedUp;
 
-			private void restFull() {
-				Dungeon.hero.rest( true );
-			}
-		} );
-		
-		add( btnSearch = new Tool( 20, 7, 20, 24, Input.Keys.S ) {
-			@Override
-			protected void onClick() {
-				doSearch();
-			}
+    private boolean lastEnabled = true;
 
-			private void doSearch() {
-				Dungeon.hero.search( true );
-			}
-		} );
-		
-		add( btnInfo = new Tool( 40, 7, 21, 24, Input.Keys.V ) {
-			@Override
-			protected void onClick() {
-				getCellInfo();
-			}
+    public Toolbar() {
+        super();
 
-			private void getCellInfo() {
-				GameScene.selectCell(informer);
-			}
-		} );
-		
-		add( btnResume = new Tool( 61, 7, 21, 24, Input.Keys.R ) {
-			@Override
-			protected void onClick() {
-				resume();
-			}
+        height = btnInventory.height();
+    }
 
-			private void resume() {
-				Dungeon.hero.resume();
-			}
-		} );
-		
-		add( btnInventory = new Tool( 82, 7, 23, 24, Input.Keys.I ) {
-			private GoldIndicator gold;
-			@Override
-			protected void onClick() {
-                showBackpack();
-			}
+    @Override
+    protected void createChildren() {
+
+        add(btnWait = new Tool(0, 7, 20, 24, Input.Keys.SPACE) {
 
             @Override
-			protected boolean onLongClick() {
-				showCatalogus();
-				return true;
-			}
+            protected void onClick() {
+                restOneTurn();
+            }
 
-			private void showBackpack() {
-				GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
-			}
-			private void showCatalogus() {
-				GameScene.show(new WndCatalogus());
-			}
+            protected boolean onLongClick() {
+                restFull();
+                return true;
+            }
 
-			@Override
-			protected void createChildren() {
-				super.createChildren();
-				gold = new GoldIndicator();
-				add( gold );
-			}
-			@Override
-			protected void layout() {
-				super.layout();
-				gold.fill( this );
-			}
-		} );
-		
-		add( btnQuick = new QuickslotTool( 105, 7, 22, 24 ) );
-		
-		add( pickedUp = new PickedUpItem() );
-	}
-	
-	@Override
-	protected void layout() {
-		btnWait.setPos( x, y );
-		btnSearch.setPos( btnWait.right(), y );
-		btnInfo.setPos( btnSearch.right(), y );
-		btnResume.setPos( btnInfo.right(), y );
-		btnQuick.setPos( width - btnQuick.width(), y );
-		btnInventory.setPos( btnQuick.left() - btnInventory.width(), y );
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		
-		if (lastEnabled != Dungeon.hero.ready) {
-			lastEnabled = Dungeon.hero.ready;
-			
-			for (Gizmo tool : members) {
-				if (tool instanceof Tool) {
-					((Tool)tool).enable( lastEnabled );
-				}
-			}
-		}
-		
-		btnResume.visible = Dungeon.hero.lastAction != null;
-		
-		if (!Dungeon.hero.isAlive()) {
-			btnInventory.enable( true );
-		}
-	}
-	
-	public void pickup( Item item ) {
-		pickedUp.reset( item, 
-			btnInventory.centerX(), 
-			btnInventory.centerY() );
-	}
-	
-	private static CellSelector.Listener informer = new CellSelector.Listener() {
-		@Override
-		public void onSelect( Integer cell ) {
-            GameScene.examineCell( cell );
-		}	
-		@Override
-		public String prompt() {
-			return "Select a cell to examine";
-		}
-	};
-	
-	private static class Tool extends Button {
-		
-		private static final int BGCOLOR = 0x7B8073;
-		
-		private Image base;
-		
-		public Tool(int x, int y, int width, int height, int hotKey ) {
-			super();
+            private void restOneTurn() {
+                Dungeon.hero.rest(false);
+            }
 
-			base.frame( x, y, width, height );
-			
-			this.width = width;
-			this.height = height;
+            private void restFull() {
+                Dungeon.hero.rest(true);
+            }
+        });
+
+        add(btnSearch = new Tool(20, 7, 20, 24, Input.Keys.S) {
+            @Override
+            protected void onClick() {
+                doSearch();
+            }
+
+            private void doSearch() {
+                Dungeon.hero.search(true);
+            }
+        });
+
+        add(btnInfo = new Tool(40, 7, 21, 24, Input.Keys.V) {
+            @Override
+            protected void onClick() {
+                getCellInfo();
+            }
+
+            private void getCellInfo() {
+                GameScene.selectCell(informer);
+            }
+        });
+
+        add(btnResume = new Tool(61, 7, 21, 24, Input.Keys.R) {
+            @Override
+            protected void onClick() {
+                resume();
+            }
+
+            private void resume() {
+                Dungeon.hero.resume();
+            }
+        });
+
+        add(btnInventory = new Tool(82, 7, 23, 24, Input.Keys.I) {
+            private GoldIndicator gold;
+
+            @Override
+            protected void onClick() {
+                showBackpack();
+            }
+
+            @Override
+            protected boolean onLongClick() {
+                showCatalogus();
+                return true;
+            }
+
+            private void showBackpack() {
+                GameScene.show(new WndBag(Dungeon.hero.belongings.backpack, null, WndBag.Mode.ALL, null));
+            }
+
+            private void showCatalogus() {
+                GameScene.show(new WndCatalogus());
+            }
+
+            @Override
+            protected void createChildren() {
+                super.createChildren();
+                gold = new GoldIndicator();
+                add(gold);
+            }
+
+            @Override
+            protected void layout() {
+                super.layout();
+                gold.fill(this);
+            }
+        });
+
+        add(btnQuick = new QuickslotTool(105, 7, 22, 24));
+
+        add(pickedUp = new PickedUpItem());
+    }
+
+    @Override
+    protected void layout() {
+        btnWait.setPos(x, y);
+        btnSearch.setPos(btnWait.right(), y);
+        btnInfo.setPos(btnSearch.right(), y);
+        btnResume.setPos(btnInfo.right(), y);
+        btnQuick.setPos(width - btnQuick.width(), y);
+        btnInventory.setPos(btnQuick.left() - btnInventory.width(), y);
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        if (lastEnabled != Dungeon.hero.ready) {
+            lastEnabled = Dungeon.hero.ready;
+
+            for (Gizmo tool : members) {
+                if (tool instanceof Tool) {
+                    ((Tool) tool).enable(lastEnabled);
+                }
+            }
+        }
+
+        btnResume.visible = Dungeon.hero.lastAction != null;
+
+        if (!Dungeon.hero.isAlive()) {
+            btnInventory.enable(true);
+        }
+    }
+
+    public void pickup(Item item) {
+        pickedUp.reset(item,
+                btnInventory.centerX(),
+                btnInventory.centerY());
+    }
+
+    private static final CellSelector.Listener informer = new CellSelector.Listener() {
+        @Override
+        public void onSelect(Integer cell) {
+            GameScene.examineCell(cell);
+        }
+
+        @Override
+        public String prompt() {
+            return "Select a cell to examine";
+        }
+    };
+
+    private static class Tool extends Button {
+
+        private static final int BGCOLOR = 0x7B8073;
+
+        private Image base;
+
+        public Tool(int x, int y, int width, int height, int hotKey) {
+            super();
+
+            base.frame(x, y, width, height);
+
+            this.width = width;
+            this.height = height;
 
             this.hotKey = hotKey;
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
-			base = new Image( Assets.TOOLBAR );
-			add( base );
-		}
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			base.x = x;
-			base.y = y;
-		}
-		
-		@Override
-		protected void onTouchDown() {
-			base.brightness( 1.4f );
-		}
-		
-		@Override
-		protected void onTouchUp() {
-			if (active) {
-				base.resetColor();
-			} else {
-				base.tint( BGCOLOR, 0.7f );
-			}
-		}
-		
-		public void enable( boolean value ) {
-			if (value != active) {
-				if (value) {
-					base.resetColor();
-				} else {
-					base.tint( BGCOLOR, 0.7f );
-				}
-				active = value;
-			}
-		}
-	}
-	
-	private static class QuickslotTool extends Tool {
-		
-		private QuickSlot slot;
-		
-		public QuickslotTool( int x, int y, int width, int height ) {
-			super( x, y, width, height, -1 );
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
-			slot = new QuickSlot();
-			add( slot );
-		}
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			slot.setRect( x + 1, y + 2, width - 2, height - 2 );
-		}
-		
-		@Override
-		public void enable( boolean value ) {
-			slot.enable( value );
-			active = value;
-		}
-	}
-	
-	private static class PickedUpItem extends ItemSprite {
-		
-		private static final float DISTANCE = DungeonTilemap.SIZE;
-		private static final float DURATION = 0.2f;
-		
-		private float dstX;
-		private float dstY;
-		private float left;
-		
-		public PickedUpItem() {
-			super();
-			
-			originToCenter();
-			
-			active = 
-			visible = 
-				false;
-		}
-		
-		public void reset( Item item, float dstX, float dstY ) {
-			view( item.image(), item.glowing() );
-			
-			active = 
-			visible = 
-				true;
-			
-			this.dstX = dstX - ItemSprite.SIZE / 2;
-			this.dstY = dstY - ItemSprite.SIZE / 2;
-			left = DURATION;
-			
-			x = this.dstX - DISTANCE;
-			y = this.dstY - DISTANCE;
-			alpha( 1 );
-		}
-		
-		@Override
-		public void update() {
-			super.update();
-			
-			if ((left -= Game.elapsed) <= 0) {
-				
-				visible = 
-				active = 
-					false;
-				
-			} else {
-				float p = left / DURATION; 
-				scale.set( (float)Math.sqrt( p ) );
-				float offset = DISTANCE * p;
-				x = dstX - offset;
-				y = dstY - offset;
-			}
-		}
-	}
+        }
+
+        @Override
+        protected void createChildren() {
+            super.createChildren();
+
+            base = new Image(Assets.TOOLBAR);
+            add(base);
+        }
+
+        @Override
+        protected void layout() {
+            super.layout();
+
+            base.x = x;
+            base.y = y;
+        }
+
+        @Override
+        protected void onTouchDown() {
+            base.brightness(1.4f);
+        }
+
+        @Override
+        protected void onTouchUp() {
+            if (active) {
+                base.resetColor();
+            } else {
+                base.tint(BGCOLOR, 0.7f);
+            }
+        }
+
+        public void enable(boolean value) {
+            if (value != active) {
+                if (value) {
+                    base.resetColor();
+                } else {
+                    base.tint(BGCOLOR, 0.7f);
+                }
+                active = value;
+            }
+        }
+    }
+
+    private static class QuickslotTool extends Tool {
+
+        private QuickSlot slot;
+
+        public QuickslotTool(int x, int y, int width, int height) {
+            super(x, y, width, height, -1);
+        }
+
+        @Override
+        protected void createChildren() {
+            super.createChildren();
+
+            slot = new QuickSlot();
+            add(slot);
+        }
+
+        @Override
+        protected void layout() {
+            super.layout();
+            slot.setRect(x + 1, y + 2, width - 2, height - 2);
+        }
+
+        @Override
+        public void enable(boolean value) {
+            slot.enable(value);
+            active = value;
+        }
+    }
+
+    private static class PickedUpItem extends ItemSprite {
+
+        private static final float DISTANCE = DungeonTilemap.SIZE;
+        private static final float DURATION = 0.2f;
+
+        private float dstX;
+        private float dstY;
+        private float left;
+
+        public PickedUpItem() {
+            super();
+
+            originToCenter();
+
+            active =
+                    visible =
+                            false;
+        }
+
+        public void reset(Item item, float dstX, float dstY) {
+            view(item.image(), item.glowing());
+
+            active =
+                    visible =
+                            true;
+
+            this.dstX = dstX - ItemSprite.SIZE / 2;
+            this.dstY = dstY - ItemSprite.SIZE / 2;
+            left = DURATION;
+
+            x = this.dstX - DISTANCE;
+            y = this.dstY - DISTANCE;
+            alpha(1);
+        }
+
+        @Override
+        public void update() {
+            super.update();
+
+            if ((left -= Game.elapsed) <= 0) {
+
+                visible =
+                        active =
+                                false;
+
+            } else {
+                float p = left / DURATION;
+                scale.set((float) Math.sqrt(p));
+                float offset = DISTANCE * p;
+                x = dstX - offset;
+                y = dstY - offset;
+            }
+        }
+    }
 }

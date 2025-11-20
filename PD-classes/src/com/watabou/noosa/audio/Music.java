@@ -19,83 +19,82 @@ package com.watabou.noosa.audio;
 import com.badlogic.gdx.Gdx;
 
 public enum Music {
-	
-	INSTANCE;
-	
-	private com.badlogic.gdx.audio.Music player;
-	
-	private String lastPlayed;
-	private boolean lastLooping;
-	
-	private boolean enabled = true;
-	
-	public void play( String assetName, boolean looping ) {
-		
-		if (isPlaying() && lastPlayed.equals( assetName )) {
-			return;
-		}
-		
-		stop();
-		
-		lastPlayed = assetName;
-		lastLooping = looping;
-		
-		if (!enabled || assetName == null) {
-			return;
-		}
-		
-		player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
-		player.setLooping(looping);
 
-		player.play();
-	}
-	
-	public void mute() {
-		lastPlayed = null;
-		stop();
-	}
+    INSTANCE;
 
-	public void pause() {
-		if (player != null) {
-			player.pause();
-		}
-	}
-	
-	public void resume() {
-		if (player != null) {
-			player.play();
-		}
-	}
-	
-	public void stop() {
-		if (player != null) {
-			player.stop();
-			player.dispose();
-			player = null;
-		}
-	}
-	
-	public void volume( float value ) {
-		if (player != null) {
-			player.setVolume( value );
-		}
-	}
-	
-	public boolean isPlaying() {
-		return player != null && player.isPlaying();
-	}
-	
-	public void enable( boolean value ) {
-		enabled = value;
-		if (isPlaying() && !value) {
-			stop();
-		} else
-		if (!isPlaying() && value) {
-			play( lastPlayed, lastLooping );
-		}
-	}
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
+    private com.badlogic.gdx.audio.Music player;
+
+    private String lastPlayed;
+    private boolean lastLooping;
+
+    private boolean enabled = true;
+
+    public void play(String assetName, boolean looping) {
+
+        if (isPlaying() && lastPlayed.equals(assetName)) {
+            return;
+        }
+
+        stop();
+
+        lastPlayed = assetName;
+        lastLooping = looping;
+
+        if (!enabled || assetName == null) {
+            return;
+        }
+
+        player = Gdx.audio.newMusic(Gdx.files.internal(assetName));
+        player.setLooping(looping);
+
+        player.play();
+    }
+
+    public void mute() {
+        lastPlayed = null;
+        stop();
+    }
+
+    public void pause() {
+        if (player != null) {
+            player.pause();
+        }
+    }
+
+    public void resume() {
+        if (player != null) {
+            player.play();
+        }
+    }
+
+    public void stop() {
+        if (player != null) {
+            player.stop();
+            player.dispose();
+            player = null;
+        }
+    }
+
+    public void volume(float value) {
+        if (player != null) {
+            player.setVolume(value);
+        }
+    }
+
+    public boolean isPlaying() {
+        return player != null && player.isPlaying();
+    }
+
+    public void enable(boolean value) {
+        enabled = value;
+        if (isPlaying() && !value) {
+            stop();
+        } else if (!isPlaying() && value) {
+            play(lastPlayed, lastLooping);
+        }
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

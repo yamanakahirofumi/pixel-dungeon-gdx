@@ -31,58 +31,58 @@ import com.watabou.pixeldungeon.ui.ScrollPane;
 import com.watabou.pixeldungeon.ui.Window;
 
 public class BadgesScene extends PixelScene {
-	
-	private static final String TXT_TITLE = "Your Badges";
-	
-	@Override
-	public void create() {
-		
-		super.create();
-		
-		Music.INSTANCE.play( Assets.THEME, true );
-		Music.INSTANCE.volume( 1f );
-		
-		uiCamera.visible = false;
-		
-		int w = Camera.main.width;
-		int h = Camera.main.height;
-		
-		Archs archs = new Archs();
-		archs.setSize( w, h );
-		add( archs );
-		
-		int pw = Math.min( 160, w - 10 );
-		int ph = h - 24;
-		
-		NinePatch panel = Chrome.get( Chrome.Type.WINDOW );
-		panel.size( pw, ph );
-		panel.x = (w - pw) / 2;
-		panel.y = (h - ph) / 2;
-		add( panel );
-		
-		BitmapText title = PixelScene.createText( TXT_TITLE, 9 );
-		title.hardlight( Window.TITLE_COLOR );
-		title.measure();
-		title.x = align( (w - title.width()) / 2 );
-		title.y = align( (panel.y - title.baseLine()) / 2 );
-		add( title );
-		
-		Badges.loadGlobal();
-		
-		ScrollPane list = new BadgesList( true );
-		add( list );
-		
-		list.setRect( 
-			panel.x + panel.marginLeft(), 
-			panel.y + panel.marginTop(), 
-			panel.innerWidth(), 
-			panel.innerHeight() );
-		
-		fadeIn();
-	}
-	
-	@Override
-	protected void onBackPressed() {
-		Game.switchScene( TitleScene.class );
-	}
+
+    private static final String TXT_TITLE = "Your Badges";
+
+    @Override
+    public void create() {
+
+        super.create();
+
+        Music.INSTANCE.play(Assets.THEME, true);
+        Music.INSTANCE.volume(1f);
+
+        uiCamera.visible = false;
+
+        int w = Camera.main.width;
+        int h = Camera.main.height;
+
+        Archs archs = new Archs();
+        archs.setSize(w, h);
+        add(archs);
+
+        int pw = Math.min(160, w - 10);
+        int ph = h - 24;
+
+        NinePatch panel = Chrome.get(Chrome.Type.WINDOW);
+        panel.size(pw, ph);
+        panel.x = (w - pw) / 2;
+        panel.y = (h - ph) / 2;
+        add(panel);
+
+        BitmapText title = PixelScene.createText(TXT_TITLE, 9);
+        title.hardlight(Window.TITLE_COLOR);
+        title.measure();
+        title.x = align((w - title.width()) / 2);
+        title.y = align((panel.y - title.baseLine()) / 2);
+        add(title);
+
+        Badges.loadGlobal();
+
+        ScrollPane list = new BadgesList(true);
+        add(list);
+
+        list.setRect(
+                panel.x + panel.marginLeft(),
+                panel.y + panel.marginTop(),
+                panel.innerWidth(),
+                panel.innerHeight());
+
+        fadeIn();
+    }
+
+    @Override
+    protected void onBackPressed() {
+        Game.switchScene(TitleScene.class);
+    }
 }

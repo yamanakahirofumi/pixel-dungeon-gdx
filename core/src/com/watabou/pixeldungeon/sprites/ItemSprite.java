@@ -40,194 +40,194 @@ import com.watabou.utils.Random;
 
 public class ItemSprite extends MovieClip {
 
-	public static final int SIZE	= 16;
-	
-	private static final float DROP_INTERVAL = 0.4f;
-	
-	protected static TextureFilm film;
-	
-	public Heap heap;
-	
-	private Glowing glowing;
-	private float phase;
-	private boolean glowUp;
-	
-	private float dropInterval;
-	
-	public ItemSprite() {
-		this( ItemSpriteSheet.SMTH, null );
-	}
-	
-	public ItemSprite( Item item ) {
-		this( item.image(), item.glowing() );
-	}
-	
-	public ItemSprite( int image, Glowing glowing ) {
-		super( Assets.ITEMS );
-		
-		if (film == null) {
-			film = new TextureFilm( texture, SIZE, SIZE );
-		}
-		
-		view( image, glowing );
-	}
-	
-	public void originToCenter() {
-		origin.set(SIZE / 2 );
-	}
-	
-	public void link() {
-		link( heap );
-	}
-	
-	public void link( Heap heap ) {
-		this.heap = heap;
-		view( heap.image(), heap.glowing() );
-		place( heap.pos );
-	}
-	
-	@Override
-	public void revive() {
-		super.revive();
-		
-		speed.set( 0 );
-		acc.set( 0 );
-		dropInterval = 0;
-		
-		heap = null;
-	}
-	
-	public PointF worldToCamera( int cell ) {
-		final int csize = DungeonTilemap.SIZE;
-		
-		return new PointF(
-			cell % Level.WIDTH * csize + (csize - SIZE) * 0.5f,
-			cell / Level.WIDTH * csize + (csize - SIZE) * 0.5f
-		);
-	}
-	
-	public void place( int p ) {
-		point( worldToCamera( p ) );
-	}
-	
-	public void drop() {
+    public static final int SIZE = 16;
 
-		if (heap.isEmpty()) {
-			return;
-		}
-			
-		dropInterval = DROP_INTERVAL;
-		
-		speed.set( 0, -100 );
-		acc.set( 0, -speed.y / DROP_INTERVAL * 2 );
-		
-		if (visible && heap != null && heap.peek() instanceof Gold) {
-			CellEmitter.center( heap.pos ).burst( Speck.factory( Speck.COIN ), 5 );
-			Sample.INSTANCE.play( Assets.SND_GOLD, 1, 1, Random.Float( 0.9f, 1.1f ) );
-		}
-	}
-	
-	public void drop( int from ) {
+    private static final float DROP_INTERVAL = 0.4f;
 
-		if (heap.pos == from) {
-			drop();
-		} else {
-			
-			float px = x;
-			float py = y;		
-			drop();
-			
-			place( from );
-	
-			speed.offset( (px-x) / DROP_INTERVAL, (py-y) / DROP_INTERVAL );
-		}
-	}
-	
-	public ItemSprite view( int image, Glowing glowing ) {
-		frame( film.get( image ) );
-		if ((this.glowing = glowing) == null) {
-			resetColor();
-		}
-		return this;
-	}
-	
-	@Override
-	public void update() {
-		super.update();
+    protected static TextureFilm film;
 
-		// Visibility
-		visible = heap == null || Dungeon.visible[heap.pos];
-		
-		// Dropping
-		if (dropInterval > 0 && (dropInterval -= Game.elapsed) <= 0) {
-			
-			speed.set( 0 );
-			acc.set( 0 );
-			place( heap.pos );
-			
-			if (Level.water[heap.pos]) {
-				GameScene.ripple( heap.pos );
-			}
-		}
-		
-		// Glowing
-		if (visible && glowing != null) {
-			if (glowUp && (phase += Game.elapsed) > glowing.period) {
-				
-				glowUp = false;
-				phase = glowing.period;
-				
-			} else if (!glowUp && (phase -= Game.elapsed) < 0) {
-				
-				glowUp = true;
-				phase = 0;
-				
-			}
-			
-			float value = phase / glowing.period * 0.6f;
-			
-			rm = gm = bm = 1 - value;
-			ra = glowing.red * value;
-			ga = glowing.green * value;
-			ba = glowing.blue * value;
-		}
-	}
-	
-	public static int pick( int index, int x, int y ) {
-		GdxTexture bmp = TextureCache.get( Assets.ITEMS ).bitmap;
-		int rows = bmp.getWidth() / SIZE;
-		int row = index / rows;
-		int col = index % rows;
-		// FIXME: I'm assuming this is super slow?
-		final TextureData td = bmp.getTextureData();
-		if (!td.isPrepared()) {
-			td.prepare();
-		}
-		final Pixmap pixmap = td.consumePixmap();
-		int pixel = pixmap.getPixel(col * SIZE + x, row * SIZE + y);
-		pixmap.dispose();
-		return pixel;
-	}
-	
-	public static class Glowing {
-		
-		public static final Glowing WHITE = new Glowing( 0xFFFFFF, 0.6f );
-		
-		public float red;
-		public float green;
-		public float blue;
-		public float period;
-		
-		public Glowing( int color ) {
-			this( color, 1f );
-		}
-		
-		public Glowing( int color, float period ) {
-			red = (color >> 16) / 255f;
-			green = ((color >> 8) & 0xFF) / 255f;
-			blue = (color & 0xFF) / 255f;
-			
-			this.period = period;
-		}
-	}
+    public Heap heap;
+
+    private Glowing glowing;
+    private float phase;
+    private boolean glowUp;
+
+    private float dropInterval;
+
+    public ItemSprite() {
+        this(ItemSpriteSheet.SMTH, null);
+    }
+
+    public ItemSprite(Item item) {
+        this(item.image(), item.glowing());
+    }
+
+    public ItemSprite(int image, Glowing glowing) {
+        super(Assets.ITEMS);
+
+        if (film == null) {
+            film = new TextureFilm(texture, SIZE, SIZE);
+        }
+
+        view(image, glowing);
+    }
+
+    public void originToCenter() {
+        origin.set(SIZE / 2);
+    }
+
+    public void link() {
+        link(heap);
+    }
+
+    public void link(Heap heap) {
+        this.heap = heap;
+        view(heap.image(), heap.glowing());
+        place(heap.pos);
+    }
+
+    @Override
+    public void revive() {
+        super.revive();
+
+        speed.set(0);
+        acc.set(0);
+        dropInterval = 0;
+
+        heap = null;
+    }
+
+    public PointF worldToCamera(int cell) {
+        final int csize = DungeonTilemap.SIZE;
+
+        return new PointF(
+                cell % Level.WIDTH * csize + (csize - SIZE) * 0.5f,
+                cell / Level.WIDTH * csize + (csize - SIZE) * 0.5f
+        );
+    }
+
+    public void place(int p) {
+        point(worldToCamera(p));
+    }
+
+    public void drop() {
+
+        if (heap.isEmpty()) {
+            return;
+        }
+
+        dropInterval = DROP_INTERVAL;
+
+        speed.set(0, -100);
+        acc.set(0, -speed.y / DROP_INTERVAL * 2);
+
+        if (visible && heap != null && heap.peek() instanceof Gold) {
+            CellEmitter.center(heap.pos).burst(Speck.factory(Speck.COIN), 5);
+            Sample.INSTANCE.play(Assets.SND_GOLD, 1, 1, Random.Float(0.9f, 1.1f));
+        }
+    }
+
+    public void drop(int from) {
+
+        if (heap.pos == from) {
+            drop();
+        } else {
+
+            float px = x;
+            float py = y;
+            drop();
+
+            place(from);
+
+            speed.offset((px - x) / DROP_INTERVAL, (py - y) / DROP_INTERVAL);
+        }
+    }
+
+    public ItemSprite view(int image, Glowing glowing) {
+        frame(film.get(image));
+        if ((this.glowing = glowing) == null) {
+            resetColor();
+        }
+        return this;
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        // Visibility
+        visible = heap == null || Dungeon.visible[heap.pos];
+
+        // Dropping
+        if (dropInterval > 0 && (dropInterval -= Game.elapsed) <= 0) {
+
+            speed.set(0);
+            acc.set(0);
+            place(heap.pos);
+
+            if (Level.water[heap.pos]) {
+                GameScene.ripple(heap.pos);
+            }
+        }
+
+        // Glowing
+        if (visible && glowing != null) {
+            if (glowUp && (phase += Game.elapsed) > glowing.period) {
+
+                glowUp = false;
+                phase = glowing.period;
+
+            } else if (!glowUp && (phase -= Game.elapsed) < 0) {
+
+                glowUp = true;
+                phase = 0;
+
+            }
+
+            float value = phase / glowing.period * 0.6f;
+
+            rm = gm = bm = 1 - value;
+            ra = glowing.red * value;
+            ga = glowing.green * value;
+            ba = glowing.blue * value;
+        }
+    }
+
+    public static int pick(int index, int x, int y) {
+        GdxTexture bmp = TextureCache.get(Assets.ITEMS).bitmap;
+        int rows = bmp.getWidth() / SIZE;
+        int row = index / rows;
+        int col = index % rows;
+        // FIXME: I'm assuming this is super slow?
+        final TextureData td = bmp.getTextureData();
+        if (!td.isPrepared()) {
+            td.prepare();
+        }
+        final Pixmap pixmap = td.consumePixmap();
+        int pixel = pixmap.getPixel(col * SIZE + x, row * SIZE + y);
+        pixmap.dispose();
+        return pixel;
+    }
+
+    public static class Glowing {
+
+        public static final Glowing WHITE = new Glowing(0xFFFFFF, 0.6f);
+
+        public float red;
+        public float green;
+        public float blue;
+        public float period;
+
+        public Glowing(int color) {
+            this(color, 1f);
+        }
+
+        public Glowing(int color, float period) {
+            red = (color >> 16) / 255f;
+            green = ((color >> 8) & 0xFF) / 255f;
+            blue = (color & 0xFF) / 255f;
+
+            this.period = period;
+        }
+    }
 }

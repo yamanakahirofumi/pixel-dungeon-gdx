@@ -23,56 +23,56 @@ import java.util.HashMap;
 
 public class BitmapCache {
 
-	private static final String DEFAULT	= "__default";
-	
-	private static HashMap<String,Layer> layers = new HashMap<String, BitmapCache.Layer>();
-	
-	public static GdxTexture get( String assetName ) {
-		return get( DEFAULT, assetName );
-	}
-	
-	public static GdxTexture get( String layerName, String assetName ) {
-		
-		Layer layer;
-		if (!layers.containsKey( layerName )) {
-			layer = new Layer();
-			layers.put( layerName, layer );
-		} else {
-			layer = layers.get( layerName );
-		}
-		
-		if (layer.containsKey( assetName )) {
-			return layer.get( assetName );
-		} else {
-			GdxTexture bmp = new GdxTexture( assetName );
-			layer.put( assetName, bmp );
-			return bmp;
-		}
-	}
+    private static final String DEFAULT = "__default";
 
-	public static void clear( String layerName ) {
-		if (layers.containsKey( layerName )) {
-			layers.get( layerName ).clear();
-			layers.remove(layerName);
-		}
-	}
-	
-	public static void clear() {
-		for (Layer layer:layers.values()) {
-			layer.clear();
-		}
-		layers.clear();
-	}
-	
-	@SuppressWarnings("serial")
-	private static class Layer extends HashMap<Object,GdxTexture> {
-		
-		@Override
-		public void clear() {
-			for (GdxTexture bmp:values()) {
-				bmp.dispose();
-			}
-			super.clear();
-		}
-	}
+    private static final HashMap<String, Layer> layers = new HashMap<>();
+
+    public static GdxTexture get(String assetName) {
+        return get(DEFAULT, assetName);
+    }
+
+    public static GdxTexture get(String layerName, String assetName) {
+
+        Layer layer;
+        if (!layers.containsKey(layerName)) {
+            layer = new Layer();
+            layers.put(layerName, layer);
+        } else {
+            layer = layers.get(layerName);
+        }
+
+        if (layer.containsKey(assetName)) {
+            return layer.get(assetName);
+        } else {
+            GdxTexture bmp = new GdxTexture(assetName);
+            layer.put(assetName, bmp);
+            return bmp;
+        }
+    }
+
+    public static void clear(String layerName) {
+        if (layers.containsKey(layerName)) {
+            layers.get(layerName).clear();
+            layers.remove(layerName);
+        }
+    }
+
+    public static void clear() {
+        for (Layer layer : layers.values()) {
+            layer.clear();
+        }
+        layers.clear();
+    }
+
+    @SuppressWarnings("serial")
+    private static class Layer extends HashMap<Object, GdxTexture> {
+
+        @Override
+        public void clear() {
+            for (GdxTexture bmp : values()) {
+                bmp.dispose();
+            }
+            super.clear();
+        }
+    }
 }

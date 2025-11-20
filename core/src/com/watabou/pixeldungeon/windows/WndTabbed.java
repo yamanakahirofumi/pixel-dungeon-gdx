@@ -17,8 +17,6 @@
  */
 package com.watabou.pixeldungeon.windows;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Input;
 import com.watabou.input.PDInputProcessor;
 import com.watabou.noosa.BitmapText;
@@ -31,174 +29,176 @@ import com.watabou.pixeldungeon.Chrome;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.ui.Window;
 
+import java.util.ArrayList;
+
 public class WndTabbed extends Window {
 
-	protected ArrayList<Tab> tabs = new ArrayList<Tab>();
-	protected Tab selected;
-	
-	public WndTabbed() {
-		super( 0, 0, Chrome.get( Chrome.Type.TAB_SET ) );
-	}
-	
-	protected Tab add( Tab tab ) {
-		
-		tab.setPos( tabs.size() == 0 ? 
-			-chrome.marginLeft() + 1 : 
-			tabs.get( tabs.size() - 1 ).right(), height );
-		tab.select( false );
-		super.add( tab );
-		
-		tabs.add( tab );
-		
-		return tab;
-	}
-	
-	public void select( int index ) {
-		select( tabs.get( index ) );
-	}
-	
-	public void select( Tab tab ) {
-		if (tab != selected) {
-			for (Tab t : tabs) {
-				if (t == selected) {
-					t.select( false );
-				} else if (t == tab) {
-					t.select( true );
-				}
-			}
-			
-			selected = tab;
-		}
-	}
-	
-	@Override
-	public void resize( int w, int h ) {
-		// -> super.resize(...)
-		this.width = w;
-		this.height = h;
-		
-		chrome.size( 
-			width + chrome.marginHor(),
-			height + chrome.marginVer() );
-		
-		camera.resize( (int)chrome.width, chrome.marginTop() + height + tabHeight());
-		camera.x = (int)(Game.width - camera.screenWidth()) / 2;
-		camera.y = (int)(Game.height - camera.screenHeight()) / 2;
-		// <- super.resize(...)
-		
-		for (Tab tab : tabs) {
-			remove( tab );
-		}
-		
-		ArrayList<Tab> tabs = new ArrayList<Tab>( this.tabs );
-		this.tabs.clear();
-		
-		for (Tab tab : tabs) {
-			add( tab );
-		}
-	}
-	
-	protected int tabHeight() {
-		return 25;
-	}
-	
-	protected void onClick( Tab tab ) {
-		select( tab );
-	}
+    protected ArrayList<Tab> tabs = new ArrayList<>();
+    protected Tab selected;
 
-	@Override
-	protected void onKeyDown(PDInputProcessor.Key key) {
-		if (key.code == Input.Keys.TAB) {
-			int next = 0;
-			for (int j = 0; j < tabs.size(); j++) {
-				Tab t = tabs.get(j);
-				if (t == selected) {
-					next = (j + 1) % tabs.size();
-					break;
-				}
-			}
-			select(next);
-		}
-	}
+    public WndTabbed() {
+        super(0, 0, Chrome.get(Chrome.Type.TAB_SET));
+    }
 
-	protected class Tab extends Button {
-		
-		protected final int CUT = 5;
-		
-		protected boolean selected;
-		
-		protected NinePatch bg;
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			if (bg != null) {
-				bg.x = x;
-				bg.y = y;
-				bg.size( width, height );
-			}
-		}
-		
-		protected void select( boolean value ) {
-			
-			active = !(selected = value);
-			
-			if (bg != null) {
-				remove( bg );
-			}
-			
-			bg = Chrome.get( selected ? 
-				Chrome.Type.TAB_SELECTED : 
-				Chrome.Type.TAB_UNSELECTED );
-			addToBack( bg );
-			
-			layout();
-		}
-		
-		@Override
-		protected void onClick() {	
-			Sample.INSTANCE.play( Assets.SND_CLICK, 0.7f, 0.7f, 1.2f );
-			WndTabbed.this.onClick( this );
-		}
-	}
-	
-	protected class LabeledTab extends Tab {
-		
-		private BitmapText btLabel;
-		
-		public LabeledTab( String label ) {
-			
-			super();
-			
-			btLabel.text( label );
-			btLabel.measure();
-		}
-		
-		@Override
-		protected void createChildren() {
-			super.createChildren();
-			
-			btLabel = PixelScene.createText( 9 );
-			add( btLabel );
-		}
-		
-		@Override
-		protected void layout() {
-			super.layout();
-			
-			btLabel.x = PixelScene.align( x + (width - btLabel.width()) / 2 );
-			btLabel.y = PixelScene.align( y + (height - btLabel.baseLine()) / 2 ) - 1;
-			if (!selected) {
-				btLabel.y -= 2;
-			}
-		}
-		
-		@Override
-		protected void select( boolean value ) {
-			super.select( value );
-			btLabel.am = selected ? 1.0f : 0.6f;
-		}
-	}	
+    protected Tab add(Tab tab) {
+
+        tab.setPos(tabs.size() == 0 ?
+                -chrome.marginLeft() + 1 :
+                tabs.get(tabs.size() - 1).right(), height);
+        tab.select(false);
+        super.add(tab);
+
+        tabs.add(tab);
+
+        return tab;
+    }
+
+    public void select(int index) {
+        select(tabs.get(index));
+    }
+
+    public void select(Tab tab) {
+        if (tab != selected) {
+            for (Tab t : tabs) {
+                if (t == selected) {
+                    t.select(false);
+                } else if (t == tab) {
+                    t.select(true);
+                }
+            }
+
+            selected = tab;
+        }
+    }
+
+    @Override
+    public void resize(int w, int h) {
+        // -> super.resize(...)
+        this.width = w;
+        this.height = h;
+
+        chrome.size(
+                width + chrome.marginHor(),
+                height + chrome.marginVer());
+
+        camera.resize((int) chrome.width, chrome.marginTop() + height + tabHeight());
+        camera.x = (int) (Game.width - camera.screenWidth()) / 2;
+        camera.y = (int) (Game.height - camera.screenHeight()) / 2;
+        // <- super.resize(...)
+
+        for (Tab tab : tabs) {
+            remove(tab);
+        }
+
+        ArrayList<Tab> tabs = new ArrayList<>(this.tabs);
+        this.tabs.clear();
+
+        for (Tab tab : tabs) {
+            add(tab);
+        }
+    }
+
+    protected int tabHeight() {
+        return 25;
+    }
+
+    protected void onClick(Tab tab) {
+        select(tab);
+    }
+
+    @Override
+    protected void onKeyDown(PDInputProcessor.Key key) {
+        if (key.code == Input.Keys.TAB) {
+            int next = 0;
+            for (int j = 0; j < tabs.size(); j++) {
+                Tab t = tabs.get(j);
+                if (t == selected) {
+                    next = (j + 1) % tabs.size();
+                    break;
+                }
+            }
+            select(next);
+        }
+    }
+
+    protected class Tab extends Button {
+
+        protected final int CUT = 5;
+
+        protected boolean selected;
+
+        protected NinePatch bg;
+
+        @Override
+        protected void layout() {
+            super.layout();
+
+            if (bg != null) {
+                bg.x = x;
+                bg.y = y;
+                bg.size(width, height);
+            }
+        }
+
+        protected void select(boolean value) {
+
+            active = !(selected = value);
+
+            if (bg != null) {
+                remove(bg);
+            }
+
+            bg = Chrome.get(selected ?
+                    Chrome.Type.TAB_SELECTED :
+                    Chrome.Type.TAB_UNSELECTED);
+            addToBack(bg);
+
+            layout();
+        }
+
+        @Override
+        protected void onClick() {
+            Sample.INSTANCE.play(Assets.SND_CLICK, 0.7f, 0.7f, 1.2f);
+            WndTabbed.this.onClick(this);
+        }
+    }
+
+    protected class LabeledTab extends Tab {
+
+        private BitmapText btLabel;
+
+        public LabeledTab(String label) {
+
+            super();
+
+            btLabel.text(label);
+            btLabel.measure();
+        }
+
+        @Override
+        protected void createChildren() {
+            super.createChildren();
+
+            btLabel = PixelScene.createText(9);
+            add(btLabel);
+        }
+
+        @Override
+        protected void layout() {
+            super.layout();
+
+            btLabel.x = PixelScene.align(x + (width - btLabel.width()) / 2);
+            btLabel.y = PixelScene.align(y + (height - btLabel.baseLine()) / 2) - 1;
+            if (!selected) {
+                btLabel.y -= 2;
+            }
+        }
+
+        @Override
+        protected void select(boolean value) {
+            super.select(value);
+            btLabel.am = selected ? 1.0f : 0.6f;
+        }
+    }
 
 }

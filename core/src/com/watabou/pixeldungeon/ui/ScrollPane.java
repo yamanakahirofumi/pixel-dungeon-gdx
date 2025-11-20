@@ -26,135 +26,135 @@ import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 public class ScrollPane extends Component {
-			
-	protected TouchController controller;
-	protected Component content;
-	
-	protected float minX;
-	protected float minY;
-	protected float maxX;
-	protected float maxY;
-	
-	public ScrollPane( Component content ) {
-		super();
-		
-		this.content = content;
-		addToBack( content );
-		
-		width = content.width();
-		height = content.height();
-		
-		content.camera = new Camera( 0, 0, 1, 1, PixelScene.defaultZoom );
-		Camera.add( content.camera );
-	}
-	
-	@Override
-	public void destroy() {
-		super.destroy();
-		Camera.remove( content.camera );
-	}
-	
-	public void scrollTo( float x, float y ) {
-		content.camera.scroll.set( x, y );
-	}
-	
-	@Override
-	protected void createChildren() {
-		controller = new TouchController();
-		add( controller );
-	}
-	
-	@Override
-	protected void layout() {
-		
-		content.setPos( 0, 0 );
-		controller.x = x;
-		controller.y = y;
-		controller.width = width;
-		controller.height = height;
-		
-		Point p = camera().cameraToScreen( x, y );
-		Camera cs = content.camera;
-		cs.x = p.x;
-		cs.y = p.y;
-		cs.resize( (int)width, (int)height );
-	}
-	
-	public Component content() {
-		return content;
-	}
-	
-	public void onClick( float x, float y ) {		
-	}
-	
-	public class TouchController extends TouchArea {
-		
-		private float dragThreshold;
-		
-		public TouchController() {
-			super( 0, 0, 0, 0 );
-			dragThreshold = PixelScene.defaultZoom * 8;
-		}
-		
-		@Override
-		protected void onClick( PDInputProcessor.Touch touch ) {
-			if (dragging) {
-				
-				dragging = false;
-				
-			} else {
-				
-				PointF p = content.camera.screenToCamera( (int)touch.current.x, (int)touch.current.y );
-				ScrollPane.this.onClick( p.x, p.y );
 
-			}
-		}	
-		
-		// true if dragging is in progress
-		private boolean dragging = false;
-		// last touch coords
-		private PointF lastPos = new PointF();
-		
-		@Override
-		protected void onDrag( PDInputProcessor.Touch t ) {
-			if (dragging) {
+    protected TouchController controller;
+    protected Component content;
 
-				doScroll(t.current);
-				
-			} else if (PointF.distance( t.current, t.start ) > dragThreshold) {
-				
-				dragging = true;
-				lastPos.set( t.current );
-				
-			}
-		}
+    protected float minX;
+    protected float minY;
+    protected float maxX;
+    protected float maxY;
 
-		@Override
-		public boolean onMouseScroll(int scroll) {
-			PointF newPt = new PointF(lastPos);
-			newPt.y -= scroll * content.camera.zoom * 2;
-			doScroll(newPt);
-			return true;
-		}
+    public ScrollPane(Component content) {
+        super();
 
-		private void doScroll(PointF current) {
-			final Camera c = content.camera;
+        this.content = content;
+        addToBack(content);
 
-			c.scroll.offset( PointF.diff(lastPos, current).invScale( c.zoom ) );
-			if (c.scroll.x + width > content.width()) {
-				c.scroll.x = content.width() - width;
-			}
-			if (c.scroll.x < 0) {
-				c.scroll.x = 0;
-			}
-			if (c.scroll.y + height > content.height()) {
-				c.scroll.y = content.height() - height;
-			}
-			if (c.scroll.y < 0) {
-				c.scroll.y = 0;
-			}
+        width = content.width();
+        height = content.height();
 
-			lastPos.set(current);
-		}
-	}
+        content.camera = new Camera(0, 0, 1, 1, PixelScene.defaultZoom);
+        Camera.add(content.camera);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        Camera.remove(content.camera);
+    }
+
+    public void scrollTo(float x, float y) {
+        content.camera.scroll.set(x, y);
+    }
+
+    @Override
+    protected void createChildren() {
+        controller = new TouchController();
+        add(controller);
+    }
+
+    @Override
+    protected void layout() {
+
+        content.setPos(0, 0);
+        controller.x = x;
+        controller.y = y;
+        controller.width = width;
+        controller.height = height;
+
+        Point p = camera().cameraToScreen(x, y);
+        Camera cs = content.camera;
+        cs.x = p.x;
+        cs.y = p.y;
+        cs.resize((int) width, (int) height);
+    }
+
+    public Component content() {
+        return content;
+    }
+
+    public void onClick(float x, float y) {
+    }
+
+    public class TouchController extends TouchArea {
+
+        private final float dragThreshold;
+
+        public TouchController() {
+            super(0, 0, 0, 0);
+            dragThreshold = PixelScene.defaultZoom * 8;
+        }
+
+        @Override
+        protected void onClick(PDInputProcessor.Touch touch) {
+            if (dragging) {
+
+                dragging = false;
+
+            } else {
+
+                PointF p = content.camera.screenToCamera((int) touch.current.x, (int) touch.current.y);
+                ScrollPane.this.onClick(p.x, p.y);
+
+            }
+        }
+
+        // true if dragging is in progress
+        private boolean dragging = false;
+        // last touch coords
+        private final PointF lastPos = new PointF();
+
+        @Override
+        protected void onDrag(PDInputProcessor.Touch t) {
+            if (dragging) {
+
+                doScroll(t.current);
+
+            } else if (PointF.distance(t.current, t.start) > dragThreshold) {
+
+                dragging = true;
+                lastPos.set(t.current);
+
+            }
+        }
+
+        @Override
+        public boolean onMouseScroll(int scroll) {
+            PointF newPt = new PointF(lastPos);
+            newPt.y -= scroll * content.camera.zoom * 2;
+            doScroll(newPt);
+            return true;
+        }
+
+        private void doScroll(PointF current) {
+            final Camera c = content.camera;
+
+            c.scroll.offset(PointF.diff(lastPos, current).invScale(c.zoom));
+            if (c.scroll.x + width > content.width()) {
+                c.scroll.x = content.width() - width;
+            }
+            if (c.scroll.x < 0) {
+                c.scroll.x = 0;
+            }
+            if (c.scroll.y + height > content.height()) {
+                c.scroll.y = content.height() - height;
+            }
+            if (c.scroll.y < 0) {
+                c.scroll.y = 0;
+            }
+
+            lastPos.set(current);
+        }
+    }
 }

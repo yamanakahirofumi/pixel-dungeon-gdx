@@ -19,16 +19,15 @@ package com.watabou.utils;
 
 import com.badlogic.gdx.utils.IntMap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SparseArray<T> extends IntMap<T> {
-	public int[] keyArray() {
-		return keys().toArray().toArray();
-	}
+    public int[] keyArray() {
+        return keys().toArray().toArray();
+    }
 
-	public List<T> valuesAsList() {
-		return Arrays.asList(values().toArray().toArray());
-	}
+    public List<T> valuesAsList() {
+        return Arrays.asList(values().toArray().toArray());
+    }
 }

@@ -31,50 +31,50 @@ import com.watabou.utils.Random;
 
 public class Blindweed extends Plant {
 
-	private static final String TXT_DESC = 
-		"Upon touching a Blindweed it perishes in a blinding flash of light.";
-	
-	{
-		image = 3;
-		plantName = "Blindweed";
-	}
-	
-	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
-		
-		if (ch != null) {
-			Buff.prolong( ch, Blindness.class, Random.Int( 5, 10 ) );
-			if (ch instanceof Mob) {
-				((Mob)ch).state = State.WANDERING;
-				((Mob)ch).beckon( Dungeon.level.randomDestination() );
-			}
-		}
-		
-		if (Dungeon.visible[pos]) {
-			CellEmitter.get( pos ).burst( Speck.factory( Speck.LIGHT ), 4 );
-		}
-	}
-	
-	@Override
-	public String desc() {
-		return TXT_DESC;
-	}
-	
-	public static class Seed extends Plant.Seed {
-		{
-			plantName = "Blindweed";
-			
-			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_BLINDWEED;
-			
-			plantClass = Blindweed.class;
-			alchemyClass = PotionOfInvisibility.class;
-		}
-		
-		@Override
-		public String desc() {
-			return TXT_DESC;
-		}
-	}
+    private static final String TXT_DESC =
+            "Upon touching a Blindweed it perishes in a blinding flash of light.";
+
+    {
+        image = 3;
+        plantName = "Blindweed";
+    }
+
+    @Override
+    public void activate(Char ch) {
+        super.activate(ch);
+
+        if (ch != null) {
+            Buff.prolong(ch, Blindness.class, Random.Int(5, 10));
+            if (ch instanceof Mob) {
+                ((Mob) ch).state = State.WANDERING;
+                ((Mob) ch).beckon(Dungeon.level.randomDestination());
+            }
+        }
+
+        if (Dungeon.visible[pos]) {
+            CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
+        }
+    }
+
+    @Override
+    public String desc() {
+        return TXT_DESC;
+    }
+
+    public static class Seed extends Plant.Seed {
+        {
+            plantName = "Blindweed";
+
+            name = "seed of " + plantName;
+            image = ItemSpriteSheet.SEED_BLINDWEED;
+
+            plantClass = Blindweed.class;
+            alchemyClass = PotionOfInvisibility.class;
+        }
+
+        @Override
+        public String desc() {
+            return TXT_DESC;
+        }
+    }
 }

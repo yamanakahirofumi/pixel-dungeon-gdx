@@ -21,41 +21,41 @@ import com.watabou.pixeldungeon.scenes.PixelScene;
 
 public class CheckBox extends RedButton {
 
-	private boolean checked = false;
-	
-	public CheckBox( String label ) {
-		super( label );
-		
-		icon( Icons.get( Icons.UNCHECKED ) );
-	}
+    private boolean checked = false;
 
-	@Override
-	protected void layout() {
-		super.layout();
-		
-		float margin = (height - text.baseLine()) / 2;
-		
-		text.x = PixelScene.align( PixelScene.uiCamera, x + margin );
-		text.y = PixelScene.align( PixelScene.uiCamera, y + margin );
-		
-		icon.x = PixelScene.align( PixelScene.uiCamera, x + width - margin - icon.width );
-		icon.y = PixelScene.align( PixelScene.uiCamera, y + (height - icon.height()) / 2 );
-	}
-	
-	public boolean checked() {
-		return checked;
-	}
-	
-	public void checked( boolean value ) {
-		if (checked != value) {
-			checked = value;
-			icon.copy( Icons.get( checked ? Icons.CHECKED : Icons.UNCHECKED ) );
-		}
-	}
-	
-	@Override
-	protected void onClick() {
-		super.onClick();
-		checked( !checked );
-	}
+    public CheckBox(String label) {
+        super(label);
+
+        icon(Icons.get(Icons.UNCHECKED));
+    }
+
+    @Override
+    protected void layout() {
+        super.layout();
+
+        float margin = (height - text.baseLine()) / 2;
+
+        text.x = PixelScene.align(PixelScene.uiCamera, x + margin);
+        text.y = PixelScene.align(PixelScene.uiCamera, y + margin);
+
+        icon.x = PixelScene.align(PixelScene.uiCamera, x + width - margin - icon.width);
+        icon.y = PixelScene.align(PixelScene.uiCamera, y + (height - icon.height()) / 2);
+    }
+
+    public boolean checked() {
+        return checked;
+    }
+
+    public void checked(boolean value) {
+        if (checked != value) {
+            checked = value;
+            icon.copy(Icons.get(checked ? Icons.CHECKED : Icons.UNCHECKED));
+        }
+    }
+
+    @Override
+    protected void onClick() {
+        super.onClick();
+        checked(!checked);
+    }
 }

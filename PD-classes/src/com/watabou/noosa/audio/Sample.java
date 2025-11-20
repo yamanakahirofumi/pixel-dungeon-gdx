@@ -22,77 +22,75 @@ import com.badlogic.gdx.audio.Sound;
 import java.util.HashMap;
 
 public enum Sample {
-	
-	INSTANCE;
 
-	protected HashMap<Object, Sound> ids = new HashMap<Object, Sound>();
-	
-	private boolean enabled = true;
-	
-	public void reset() {
+    INSTANCE;
 
-		for (Sound sound : ids.values()) {
-			sound.dispose();
-		}
+    private final HashMap<Object, Sound> ids = new HashMap<>();
 
-		ids.clear();
-	}
-	
-	public void pause() {
-		for (Sound sound : ids.values()) {
-			sound.pause();
-		}
-	}
-	
-	public void resume() {
-		for (Sound sound : ids.values()) {
-			sound.resume();
-		}
-	}
-	
-	public void load( String... assets ) {
-		
-		for (int i=0; i < assets.length; i++) {
-			
-			String asset = assets[i];
-			
-			if (!ids.containsKey( asset )) {
-				ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
-			}
-			
-		}
-	}
-	
-	public void unload( Object src ) {
-		
-		if (ids.containsKey( src )) {
-			ids.get( src ).dispose();
-			ids.remove( src );
-		}
-	}
-	
-	public long play(Object id) {
-		return play( id, 1, 1, 1 );
-	}
-	
-	public long play(Object id, float volume) {
-		return play( id, volume, volume, 1 );
-	}
-	
-	public long play(Object id, float leftVolume, float rightVolume, float rate) {
-		if (enabled && ids.containsKey( id )) {
-			Sound sound = ids.get(id);
-			return sound.play(leftVolume, rate, 0);
-		} else {
-			return -1;
-		}
-	}
-	
-	public void enable( boolean value ) {
-		enabled = value;
-	}
-	
-	public boolean isEnabled() {
-		return enabled;
-	}
+    private boolean enabled = true;
+
+    public void reset() {
+
+        for (Sound sound : ids.values()) {
+            sound.dispose();
+        }
+
+        ids.clear();
+    }
+
+    public void pause() {
+        for (Sound sound : ids.values()) {
+            sound.pause();
+        }
+    }
+
+    public void resume() {
+        for (Sound sound : ids.values()) {
+            sound.resume();
+        }
+    }
+
+    public void load(String... assets) {
+
+        for (String asset : assets) {
+
+            if (!ids.containsKey(asset)) {
+                ids.put(asset, Gdx.audio.newSound(Gdx.files.internal(asset)));
+            }
+
+        }
+    }
+
+    public void unload(Object src) {
+
+        if (ids.containsKey(src)) {
+            ids.get(src).dispose();
+            ids.remove(src);
+        }
+    }
+
+    public long play(Object id) {
+        return play(id, 1, 1, 1);
+    }
+
+    public long play(Object id, float volume) {
+        return play(id, volume, volume, 1);
+    }
+
+    public long play(Object id, float leftVolume, float rightVolume, float rate) {
+        if (enabled && ids.containsKey(id)) {
+            Sound sound = ids.get(id);
+            return sound.play(leftVolume, rate, 0);
+        } else {
+            return -1;
+        }
+    }
+
+    public void enable(boolean value) {
+        enabled = value;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

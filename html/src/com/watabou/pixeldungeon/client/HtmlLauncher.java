@@ -7,14 +7,14 @@ import com.watabou.pixeldungeon.PixelDungeon;
 
 public class HtmlLauncher extends GwtApplication {
 
-        @Override
-        public GwtApplicationConfiguration getConfig () {
-                return new GwtApplicationConfiguration(480, 320);
-        }
+    @Override
+    public GwtApplicationConfiguration getConfig() {
+        return new GwtApplicationConfiguration(480, 320);
+    }
 
-        @Override
-        public ApplicationListener createApplicationListener () {
-	        String version = "???";
-                return new PixelDungeon(null, version);
-        }
+    @Override
+    public ApplicationListener createApplicationListener() {
+        String version = "???";
+        return new PixelDungeon(null, version);
+    }
 }

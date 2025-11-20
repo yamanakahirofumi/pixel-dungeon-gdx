@@ -20,25 +20,25 @@ package com.watabou.pixeldungeon.items.keys;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class GoldenKey extends Key {
-	
-	{
-		name = "golden key";
-		image = ItemSpriteSheet.GOLDEN_KEY;
-	}
-	
-	public GoldenKey() {
-		this( 0 );
-	}
-	
-	public GoldenKey( int depth ) {
-		super();
-		this.depth = depth;
-	}
-	
-	@Override
-	public String info() {
-		return 
-			"The notches on this golden key are tiny and intricate. " +
-			"Maybe it can open some chest lock?";
-	}
+
+    {
+        name = "golden key";
+        image = ItemSpriteSheet.GOLDEN_KEY;
+    }
+
+    public GoldenKey() {
+        this(0);
+    }
+
+    public GoldenKey(int depth) {
+        super();
+        this.depth = depth;
+    }
+
+    @Override
+    public String info() {
+        return
+                "The notches on this golden key are tiny and intricate. " +
+                "Maybe it can open some chest lock?";
+    }
 }

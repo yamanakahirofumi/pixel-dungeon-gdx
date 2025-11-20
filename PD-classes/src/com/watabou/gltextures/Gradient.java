@@ -23,23 +23,23 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.watabou.gdx.GdxTexture;
 
 public class Gradient extends SmartTexture {
-	
-	public Gradient( int colors[] ) {
-		
-		super(createTexture(colors));
 
-		filter( TextureFilter.Linear, TextureFilter.Linear );
-		wrap( TextureWrap.ClampToEdge, TextureWrap.ClampToEdge );
-		
-		TextureCache.add( Gradient.class, this );
-	}
+    public Gradient(int[] colors) {
 
-	private static GdxTexture createTexture(int[] colors) {
-		final Pixmap pixmap = new Pixmap( colors.length, 1, Pixmap.Format.RGBA8888 );
-		for (int i=0; i < colors.length; i++) {
-			final int color = colors[i];
-			pixmap.drawPixel(i, 0, (color << 8) | (color >>> 24));
-		}
-		return new GdxTexture(pixmap);
-	}
+        super(createTexture(colors));
+
+        filter(TextureFilter.Linear, TextureFilter.Linear);
+        wrap(TextureWrap.ClampToEdge, TextureWrap.ClampToEdge);
+
+        TextureCache.add(Gradient.class, this);
+    }
+
+    private static GdxTexture createTexture(int[] colors) {
+        final Pixmap pixmap = new Pixmap(colors.length, 1, Pixmap.Format.RGBA8888);
+        for (int i = 0; i < colors.length; i++) {
+            final int color = colors[i];
+            pixmap.drawPixel(i, 0, (color << 8) | (color >>> 24));
+        }
+        return new GdxTexture(pixmap);
+    }
 }

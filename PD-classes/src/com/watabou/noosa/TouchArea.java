@@ -20,142 +20,134 @@ import com.watabou.input.PDInputProcessor;
 import com.watabou.utils.Signal;
 
 public class TouchArea extends Visual implements Signal.Listener<PDInputProcessor.Touch> {
-	
-	// Its target can be toucharea itself
-	public final Visual target;
-	
-	protected PDInputProcessor.Touch touch = null;
 
-	private Signal.Listener<PDInputProcessor.Key> keyListener = new Signal.Listener<PDInputProcessor.Key>() {
-		@Override
-		public void onSignal(PDInputProcessor.Key key) {
-			final boolean handled;
+    // Its target can be toucharea itself
+    public final Visual target;
 
-			if (key.pressed) {
-				handled = onKeyDown(key);
-			} else {
-				handled = onKeyUp(key);
-			}
+    protected PDInputProcessor.Touch touch = null;
 
-			if (handled) {
-				PDInputProcessor.eventKey.cancel();
-			}
-		}
-	};
+    private final Signal.Listener<PDInputProcessor.Key> keyListener = key -> {
+        final boolean handled;
 
-	private Signal.Listener<PDInputProcessor.PDMouseEvent> mouseListener = new Signal.Listener<PDInputProcessor.PDMouseEvent>() {
-		@Override
-		public void onSignal(PDInputProcessor.PDMouseEvent event) {
-			final boolean handled;
+        if (key.pressed) {
+            handled = onKeyDown(key);
+        } else {
+            handled = onKeyUp(key);
+        }
 
-			handled = onMouseScroll(event.scroll);
+        if (handled) {
+            PDInputProcessor.eventKey.cancel();
+        }
+    };
 
-			if (handled) {
-				PDInputProcessor.eventMouse.cancel();
-			}
-		}
-	};
+    private final Signal.Listener<PDInputProcessor.PDMouseEvent> mouseListener = event -> {
+        final boolean handled;
 
-	public boolean onMouseScroll(int scroll) {
-		return false;
-	}
+        handled = onMouseScroll(event.scroll());
 
-	public boolean onKeyDown(PDInputProcessor.Key key) {
-		return false;
-	}
+        if (handled) {
+            PDInputProcessor.eventMouse.cancel();
+        }
+    };
 
-	public boolean onKeyUp(PDInputProcessor.Key key) {
-		return false;
-	}
+    public boolean onMouseScroll(int scroll) {
+        return false;
+    }
 
-	public TouchArea( Visual target ) {
-		super( 0, 0, 0, 0 );
-		this.target = target;
+    public boolean onKeyDown(PDInputProcessor.Key key) {
+        return false;
+    }
 
-		setupListeners();
-	}
+    public boolean onKeyUp(PDInputProcessor.Key key) {
+        return false;
+    }
 
-	public TouchArea( float x, float y, float width, float height ) {
-		super(x, y, width, height);
-		this.target = this;
+    public TouchArea(Visual target) {
+        super(0, 0, 0, 0);
+        this.target = target;
 
-		visible = false;
+        setupListeners();
+    }
 
-		setupListeners();
-	}
+    public TouchArea(float x, float y, float width, float height) {
+        super(x, y, width, height);
+        this.target = this;
 
-	private void setupListeners() {
-		PDInputProcessor.eventTouch.add(this);
-		PDInputProcessor.eventKey.add( keyListener );
-		PDInputProcessor.eventMouse.add(mouseListener);
-	}
+        visible = false;
 
-	@Override
-	public void onSignal( PDInputProcessor.Touch touch ) {
-		
-		if (!isActive()) {
-			return;
-		}
-		
-		boolean hit = touch != null && target.overlapsScreenPoint( (int)touch.start.x, (int)touch.start.y );
-		
-		if (hit) {
+        setupListeners();
+    }
 
-			PDInputProcessor.eventTouch.cancel();
-			
-			if (touch.down) {
-				
-				if (this.touch == null) {
-					this.touch = touch;
-				}
-				onTouchDown( touch );
-				
-			} else {
+    private void setupListeners() {
+        PDInputProcessor.eventTouch.add(this);
+        PDInputProcessor.eventKey.add(keyListener);
+        PDInputProcessor.eventMouse.add(mouseListener);
+    }
 
-				onTouchUp( touch );
-				
-				if (this.touch == touch) {
-					this.touch = null;
-					onClick( touch );
-				}
+    @Override
+    public void onSignal(PDInputProcessor.Touch touch) {
 
-			}
-			
-		} else {
+        if (!isActive()) {
+            return;
+        }
 
-			if (touch == null && this.touch != null) {
-				onDrag( this.touch );
-			}
-			
-			else if (this.touch != null && touch != null && !touch.down) {
-				onTouchUp( touch );
-				this.touch = null;
-			}
-			
-		}
-	}
-	
-	protected void onTouchDown( PDInputProcessor.Touch touch ) {
-	}
-	
-	protected void onTouchUp( PDInputProcessor.Touch touch ) {
-	}
-	
-	protected void onClick( PDInputProcessor.Touch touch ) {
-	}
-	
-	protected void onDrag( PDInputProcessor.Touch touch ) {
-	}
-	
-	public void reset() {
-		touch = null;
-	}
-	
-	@Override
-	public void destroy() {
-		PDInputProcessor.eventMouse.remove( mouseListener );
-		PDInputProcessor.eventKey.remove( keyListener );
-		PDInputProcessor.eventTouch.remove( this );
-		super.destroy();
-	}
+        boolean hit = touch != null && target.overlapsScreenPoint((int) touch.start.x, (int) touch.start.y);
+
+        if (hit) {
+
+            PDInputProcessor.eventTouch.cancel();
+
+            if (touch.down) {
+
+                if (this.touch == null) {
+                    this.touch = touch;
+                }
+                onTouchDown(touch);
+
+            } else {
+
+                onTouchUp(touch);
+
+                if (this.touch == touch) {
+                    this.touch = null;
+                    onClick(touch);
+                }
+
+            }
+
+        } else {
+
+            if (touch == null && this.touch != null) {
+                onDrag(this.touch);
+            } else if (this.touch != null && !touch.down) {
+                onTouchUp(touch);
+                this.touch = null;
+            }
+
+        }
+    }
+
+    protected void onTouchDown(PDInputProcessor.Touch touch) {
+    }
+
+    protected void onTouchUp(PDInputProcessor.Touch touch) {
+    }
+
+    protected void onClick(PDInputProcessor.Touch touch) {
+    }
+
+    protected void onDrag(PDInputProcessor.Touch touch) {
+    }
+
+    public void reset() {
+        touch = null;
+    }
+
+    @Override
+    public void destroy() {
+        PDInputProcessor.eventMouse.remove(mouseListener);
+        PDInputProcessor.eventKey.remove(keyListener);
+        PDInputProcessor.eventTouch.remove(this);
+        super.destroy();
+    }
 }

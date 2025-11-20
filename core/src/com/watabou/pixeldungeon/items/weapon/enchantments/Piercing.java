@@ -25,51 +25,51 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.utils.Random;
 
 public class Piercing extends Enchantment {
-	
-	private static final String TXT_PIERCING	= "Piercing %s";
-	
-	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		
-		int level = Math.max( 0, weapon.level );
-		
-		int maxDamage = (int)(damage * Math.pow( 2, -1d / (level + 1) ));
-		if (maxDamage >= 1) {
-			
-			int d = defender.pos - attacker.pos;
-			int pos = defender.pos + d;
-			
-			do {
-				
-				Char ch = Actor.findChar( pos );
-				if (ch == null) {
-					break;
-				}
-				
-				int dr = Random.IntRange( 0, ch.dr() );
-				int dmg = Random.Int( 1, maxDamage );
-				int effectiveDamage = Math.max( dmg - dr, 0 );
-				
-				ch.damage( effectiveDamage, this );
-				
-				ch.sprite.bloodBurstA( attacker.sprite.center(), effectiveDamage );
-				ch.sprite.flash();
-				
-				pos += d;
-			} while (pos >= 0 && pos < Level.LENGTH);
-			
-			return true;
-			
-		} else {
-		
-			return false;
-			
-		}
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_PIERCING, weaponName );
-	}
+
+    private static final String TXT_PIERCING = "Piercing %s";
+
+    @Override
+    public boolean proc(Weapon weapon, Char attacker, Char defender, int damage) {
+
+        int level = Math.max(0, weapon.level);
+
+        int maxDamage = (int) (damage * Math.pow(2, -1d / (level + 1)));
+        if (maxDamage >= 1) {
+
+            int d = defender.pos - attacker.pos;
+            int pos = defender.pos + d;
+
+            do {
+
+                Char ch = Actor.findChar(pos);
+                if (ch == null) {
+                    break;
+                }
+
+                int dr = Random.IntRange(0, ch.dr());
+                int dmg = Random.Int(1, maxDamage);
+                int effectiveDamage = Math.max(dmg - dr, 0);
+
+                ch.damage(effectiveDamage, this);
+
+                ch.sprite.bloodBurstA(attacker.sprite.center(), effectiveDamage);
+                ch.sprite.flash();
+
+                pos += d;
+            } while (pos >= 0 && pos < Level.LENGTH);
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
+
+    @Override
+    public String name(String weaponName) {
+        return String.format(TXT_PIERCING, weaponName);
+    }
 
 }

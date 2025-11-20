@@ -24,22 +24,22 @@ import com.watabou.pixeldungeon.items.weapon.missiles.Boomerang;
 
 public class Instability extends Weapon.Enchantment {
 
-	private static final String TXT_UNSTABLE	= "Unstable %s";
-	
-	@Override
-	public boolean proc( Weapon weapon, Char attacker, Char defender, int damage ) {
-		Enchantment ench = random();
-		if (weapon instanceof Boomerang) {
-			while (ench instanceof Piercing || ench instanceof Swing) {
-				ench = Enchantment.random();
-			}
-		}
-		return ench.proc( weapon, attacker, defender, damage );
-	}
-	
-	@Override
-	public String name( String weaponName) {
-		return String.format( TXT_UNSTABLE, weaponName );
-	}
+    private static final String TXT_UNSTABLE = "Unstable %s";
+
+    @Override
+    public boolean proc(Weapon weapon, Char attacker, Char defender, int damage) {
+        Enchantment ench = random();
+        if (weapon instanceof Boomerang) {
+            while (ench instanceof Piercing || ench instanceof Swing) {
+                ench = Enchantment.random();
+            }
+        }
+        return ench.proc(weapon, attacker, defender, damage);
+    }
+
+    @Override
+    public String name(String weaponName) {
+        return String.format(TXT_UNSTABLE, weaponName);
+    }
 
 }

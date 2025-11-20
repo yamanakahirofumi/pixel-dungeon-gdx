@@ -21,59 +21,52 @@ import com.watabou.input.PDInputProcessor;
 import com.watabou.utils.Signal;
 
 public class Scene extends Group {
-	
-	private Signal.Listener<PDInputProcessor.Key> keyListener;
-	
-	public void create() {
-		PDInputProcessor.eventKey.add( keyListener = new Signal.Listener<PDInputProcessor.Key>() {
-			@Override
-			public void onSignal( PDInputProcessor.Key key ) {
-				if (Game.instance != null && key.pressed) {
-					switch (key.code) {
-					case Input.Keys.BACK:
-					case Input.Keys.ESCAPE:
-						onBackPressed();
-						break;
-					case Input.Keys.MENU:
-					case Input.Keys.F5:
-						onMenuPressed();
-						break;
-					}
-				}
-			}
-		} );
-	}
-	
-	@Override
-	public void destroy() {
-		PDInputProcessor.eventKey.remove( keyListener );
-		super.destroy();
-	}
-	
-	public void pause() {
-		
-	}
-	
-	public void resume() {
-		
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-	}
-	
-	@Override
-	public Camera camera() {
-		return Camera.main;
-	}
-	
-	protected void onBackPressed() {
-		Game.instance.finish();
-	}
-	
-	protected void onMenuPressed() {
-		
-	}
+
+    private Signal.Listener<PDInputProcessor.Key> keyListener;
+
+    public void create() {
+        PDInputProcessor.eventKey.add(keyListener = key -> {
+            if (Game.instance != null && key.pressed) {
+                switch (key.code) {
+                    case Input.Keys.BACK:
+                    case Input.Keys.ESCAPE:
+                        onBackPressed();
+                        break;
+                    case Input.Keys.MENU:
+                    case Input.Keys.F5:
+                        onMenuPressed();
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void destroy() {
+        PDInputProcessor.eventKey.remove(keyListener);
+        super.destroy();
+    }
+
+    public void pause() {
+
+    }
+
+    @Override
+    public void update() {
+        super.update();
+    }
+
+    @Override
+    public Camera camera() {
+        return Camera.main;
+    }
+
+    protected void onBackPressed() {
+        Game.instance.finish();
+    }
+
+    protected void onMenuPressed() {
+
+    }
 
 }

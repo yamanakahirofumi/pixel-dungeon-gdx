@@ -30,168 +30,168 @@ import com.watabou.pixeldungeon.ui.RedButton;
 import com.watabou.pixeldungeon.ui.Window;
 
 public class WndSettings extends Window {
-	
-	private static final String TXT_ZOOM_IN			= "+";
-	private static final String TXT_ZOOM_OUT		= "-";
-	private static final String TXT_ZOOM_DEFAULT	= "Default Zoom";
 
-	private static final String TXT_SCALE_UP		= "Scale up UI";
-	
-	private static final String TXT_MUSIC	= "Music";
-	
-	private static final String TXT_SOUND	= "Sound FX";
-	
-	private static final String TXT_BRIGHTNESS	= "Brightness";
-	
-	private static final String TXT_SWITCH_PORT	= "Switch to portrait";
-	private static final String TXT_SWITCH_LAND	= "Switch to landscape";
+    private static final String TXT_ZOOM_IN = "+";
+    private static final String TXT_ZOOM_OUT = "-";
+    private static final String TXT_ZOOM_DEFAULT = "Default Zoom";
 
-	private static final String TXT_SWITCH_FULL = "Switch to fullscreen";
-	private static final String TXT_SWITCH_WIN = "Switch to windowed";
+    private static final String TXT_SCALE_UP = "Scale up UI";
 
-	private static final int WIDTH		= 112;
-	private static final int BTN_HEIGHT	= 20;
-	private static final int GAP 		= 2;
-	
-	private RedButton btnZoomOut;
-	private RedButton btnZoomIn;
-	
-	public WndSettings( boolean inGame ) {
-		super();
-		
-		if (inGame) {
-			int w = BTN_HEIGHT;
-			
-			// Zoom out
-			btnZoomOut = new RedButton( TXT_ZOOM_OUT ) {
-				@Override
-				protected void onClick() {
-					zoom( Camera.main.zoom - 1 );
-				}
-			};
-			add( btnZoomOut.setRect( 0, 0, w, BTN_HEIGHT) );
-			
-			// Zoom in
-			btnZoomIn = new RedButton( TXT_ZOOM_IN ) {
-				@Override
-				protected void onClick() {
-					zoom( Camera.main.zoom + 1 );
-				}
-			};
-			add( btnZoomIn.setRect( WIDTH - w, 0, w, BTN_HEIGHT) );
-			
-			// Default zoom
-			add( new RedButton( TXT_ZOOM_DEFAULT ) {
-				@Override
-				protected void onClick() {
-					zoom( PixelScene.defaultZoom );
-				}
-			}.setRect( btnZoomOut.right(), 0, WIDTH - btnZoomIn.width() - btnZoomOut.width(), BTN_HEIGHT ) );
-			
-			updateEnabled();
-			
-		} else {
-			
-			CheckBox btnScaleUp = new CheckBox( TXT_SCALE_UP ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					PixelDungeon.scaleUp( checked() );
-				}
-			};
-			btnScaleUp.setRect( 0, 0, WIDTH, BTN_HEIGHT );
-			btnScaleUp.checked( PixelDungeon.scaleUp() );
-			add( btnScaleUp );
-			
-		}
-		
-		CheckBox btnMusic = new CheckBox( TXT_MUSIC ) {
-			@Override
-			protected void onClick() {
-				super.onClick();
-				PixelDungeon.music( checked() );
-			}
-		};
-		btnMusic.setRect( 0, BTN_HEIGHT + GAP, WIDTH, BTN_HEIGHT );
-		btnMusic.checked( PixelDungeon.music() );
-		add( btnMusic );
-		
-		CheckBox btnSound = new CheckBox( TXT_SOUND ) {
-			@Override
-			protected void onClick() {
-				super.onClick();
-				PixelDungeon.soundFx( checked() );
-				Sample.INSTANCE.play( Assets.SND_CLICK );
-			}
-		};
-		btnSound.setRect( 0, btnMusic.bottom() + GAP, WIDTH, BTN_HEIGHT );
-		btnSound.checked( PixelDungeon.soundFx() );
-		add( btnSound );
+    private static final String TXT_MUSIC = "Music";
 
-		Button lastBtn = btnSound;
-		if (!inGame) {
-			Application.ApplicationType type = Gdx.app.getType();
-			if (type == Application.ApplicationType.Android || type == Application.ApplicationType.iOS) {
-				RedButton btnOrientation = new RedButton(orientationText()) {
-					@Override
-					protected void onClick() {
-						PixelDungeon.landscape(!PixelDungeon.landscape());
-					}
-				};
-				btnOrientation.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
-				add(btnOrientation);
+    private static final String TXT_SOUND = "Sound FX";
 
-				lastBtn = btnOrientation;
-			} else if (type == Application.ApplicationType.Desktop) {
-				RedButton btnResolution = new RedButton(resolutionText()) {
-					@Override
-					protected void onClick() {
-						PixelDungeon.fullscreen(!PixelDungeon.fullscreen());
-					}
-				};
-				btnResolution.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
-				add(btnResolution);
+    private static final String TXT_BRIGHTNESS = "Brightness";
 
-				lastBtn = btnResolution;
-			}
-		} else {
-		
-			CheckBox btnBrightness = new CheckBox( TXT_BRIGHTNESS ) {
-				@Override
-				protected void onClick() {
-					super.onClick();
-					PixelDungeon.brightness( checked() );
-				}
-			};
-			btnBrightness.setRect( 0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT );
-			btnBrightness.checked(PixelDungeon.brightness());
-			add( btnBrightness );
-			
-			lastBtn = btnBrightness;
-			
-		}
-		resize(WIDTH, (int) lastBtn.bottom());
-	}
-	
-	private void zoom( float value ) {
+    private static final String TXT_SWITCH_PORT = "Switch to portrait";
+    private static final String TXT_SWITCH_LAND = "Switch to landscape";
 
-		Camera.main.zoom( value );
-		PixelDungeon.zoom( (int)(value - PixelScene.defaultZoom) );
+    private static final String TXT_SWITCH_FULL = "Switch to fullscreen";
+    private static final String TXT_SWITCH_WIN = "Switch to windowed";
 
-		updateEnabled();
-	}
-	
-	private void updateEnabled() {
-		float zoom = Camera.main.zoom;
-		btnZoomIn.enable( zoom < PixelScene.maxZoom );
-		btnZoomOut.enable( zoom > PixelScene.minZoom );
-	}
-	
-	private String orientationText() {
-		return PixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND;
-	}
+    private static final int WIDTH = 112;
+    private static final int BTN_HEIGHT = 20;
+    private static final int GAP = 2;
 
-	private String resolutionText() {
-		return Gdx.graphics.isFullscreen() ? TXT_SWITCH_WIN : TXT_SWITCH_FULL;
-	}
+    private RedButton btnZoomOut;
+    private RedButton btnZoomIn;
+
+    public WndSettings(boolean inGame) {
+        super();
+
+        if (inGame) {
+            int w = BTN_HEIGHT;
+
+            // Zoom out
+            btnZoomOut = new RedButton(TXT_ZOOM_OUT) {
+                @Override
+                protected void onClick() {
+                    zoom(Camera.main.zoom - 1);
+                }
+            };
+            add(btnZoomOut.setRect(0, 0, w, BTN_HEIGHT));
+
+            // Zoom in
+            btnZoomIn = new RedButton(TXT_ZOOM_IN) {
+                @Override
+                protected void onClick() {
+                    zoom(Camera.main.zoom + 1);
+                }
+            };
+            add(btnZoomIn.setRect(WIDTH - w, 0, w, BTN_HEIGHT));
+
+            // Default zoom
+            add(new RedButton(TXT_ZOOM_DEFAULT) {
+                @Override
+                protected void onClick() {
+                    zoom(PixelScene.defaultZoom);
+                }
+            }.setRect(btnZoomOut.right(), 0, WIDTH - btnZoomIn.width() - btnZoomOut.width(), BTN_HEIGHT));
+
+            updateEnabled();
+
+        } else {
+
+            CheckBox btnScaleUp = new CheckBox(TXT_SCALE_UP) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    PixelDungeon.scaleUp(checked());
+                }
+            };
+            btnScaleUp.setRect(0, 0, WIDTH, BTN_HEIGHT);
+            btnScaleUp.checked(PixelDungeon.scaleUp());
+            add(btnScaleUp);
+
+        }
+
+        CheckBox btnMusic = new CheckBox(TXT_MUSIC) {
+            @Override
+            protected void onClick() {
+                super.onClick();
+                PixelDungeon.music(checked());
+            }
+        };
+        btnMusic.setRect(0, BTN_HEIGHT + GAP, WIDTH, BTN_HEIGHT);
+        btnMusic.checked(PixelDungeon.music());
+        add(btnMusic);
+
+        CheckBox btnSound = new CheckBox(TXT_SOUND) {
+            @Override
+            protected void onClick() {
+                super.onClick();
+                PixelDungeon.soundFx(checked());
+                Sample.INSTANCE.play(Assets.SND_CLICK);
+            }
+        };
+        btnSound.setRect(0, btnMusic.bottom() + GAP, WIDTH, BTN_HEIGHT);
+        btnSound.checked(PixelDungeon.soundFx());
+        add(btnSound);
+
+        Button lastBtn = btnSound;
+        if (!inGame) {
+            Application.ApplicationType type = Gdx.app.getType();
+            if (type == Application.ApplicationType.Android || type == Application.ApplicationType.iOS) {
+                RedButton btnOrientation = new RedButton(orientationText()) {
+                    @Override
+                    protected void onClick() {
+                        PixelDungeon.landscape(!PixelDungeon.landscape());
+                    }
+                };
+                btnOrientation.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
+                add(btnOrientation);
+
+                lastBtn = btnOrientation;
+            } else if (type == Application.ApplicationType.Desktop) {
+                RedButton btnResolution = new RedButton(resolutionText()) {
+                    @Override
+                    protected void onClick() {
+                        PixelDungeon.fullscreen(!PixelDungeon.fullscreen());
+                    }
+                };
+                btnResolution.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
+                add(btnResolution);
+
+                lastBtn = btnResolution;
+            }
+        } else {
+
+            CheckBox btnBrightness = new CheckBox(TXT_BRIGHTNESS) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    PixelDungeon.brightness(checked());
+                }
+            };
+            btnBrightness.setRect(0, btnSound.bottom() + GAP, WIDTH, BTN_HEIGHT);
+            btnBrightness.checked(PixelDungeon.brightness());
+            add(btnBrightness);
+
+            lastBtn = btnBrightness;
+
+        }
+        resize(WIDTH, (int) lastBtn.bottom());
+    }
+
+    private void zoom(float value) {
+
+        Camera.main.zoom(value);
+        PixelDungeon.zoom((int) (value - PixelScene.defaultZoom));
+
+        updateEnabled();
+    }
+
+    private void updateEnabled() {
+        float zoom = Camera.main.zoom;
+        btnZoomIn.enable(zoom < PixelScene.maxZoom);
+        btnZoomOut.enable(zoom > PixelScene.minZoom);
+    }
+
+    private String orientationText() {
+        return PixelDungeon.landscape() ? TXT_SWITCH_PORT : TXT_SWITCH_LAND;
+    }
+
+    private String resolutionText() {
+        return Gdx.graphics.isFullscreen() ? TXT_SWITCH_WIN : TXT_SWITCH_FULL;
+    }
 }

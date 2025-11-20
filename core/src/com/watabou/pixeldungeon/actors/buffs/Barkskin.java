@@ -21,43 +21,43 @@ import com.watabou.pixeldungeon.ui.BuffIndicator;
 
 public class Barkskin extends Buff {
 
-	private int level = 0;
-	
-	@Override
-	public boolean act() {
-		if (target.isAlive()) {
+    private int level = 0;
 
-			spend( TICK );
-			if (--level <= 0) {
-				detach();
-			}
-			
-		} else {
-			
-			detach();
-			
-		}
-		
-		return true;
-	}
-	
-	public int level() {
-		return level;
-	}
-	
-	public void level( int value ) {
-		if (level < value) {
-			level = value;
-		}
-	}
-	
-	@Override
-	public int icon() {
-		return BuffIndicator.BARKSKIN;
-	}
-	
-	@Override
-	public String toString() {
-		return "Barkskin";
-	}
+    @Override
+    public boolean act() {
+        if (target.isAlive()) {
+
+            spend(TICK);
+            if (--level <= 0) {
+                detach();
+            }
+
+        } else {
+
+            detach();
+
+        }
+
+        return true;
+    }
+
+    public int level() {
+        return level;
+    }
+
+    public void level(int value) {
+        if (level < value) {
+            level = value;
+        }
+    }
+
+    @Override
+    public int icon() {
+        return BuffIndicator.BARKSKIN;
+    }
+
+    @Override
+    public String toString() {
+        return "Barkskin";
+    }
 }
