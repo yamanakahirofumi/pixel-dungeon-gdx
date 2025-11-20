@@ -86,6 +86,7 @@ project(":html") {
 
     dependencies {
         implementation project(":core")
+        implementation project(":PD-classes")
         implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
@@ -112,7 +113,7 @@ project(":PD-classes") {
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
-	    implementation "org.json:json:20140107"
+	    implementation "org.json:json:20250517"
     }
 }
 
