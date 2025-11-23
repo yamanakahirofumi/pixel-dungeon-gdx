@@ -100,19 +100,19 @@ public class Journal {
     public static void add(Feature feature) {
         int size = records.size();
         for (Record rec : records) {
-            if (rec.feature == feature && rec.depth == Dungeon.depth) {
+            if (rec.feature == feature && rec.depth == Dungeon.getInstance().depth) {
                 return;
             }
         }
 
-        records.add(new Record(feature, Dungeon.depth));
+        records.add(new Record(feature, Dungeon.getInstance().depth));
     }
 
     public static void remove(Feature feature) {
         int size = records.size();
         for (int i = 0; i < size; i++) {
             Record rec = records.get(i);
-            if (rec.feature == feature && rec.depth == Dungeon.depth) {
+            if (rec.feature == feature && rec.depth == Dungeon.getInstance().depth) {
                 records.remove(i);
                 return;
             }

@@ -122,16 +122,16 @@ public class MissileWeapon extends Weapon {
 
         info.append("\n\nAverage damage of this weapon equals to ").append(MIN + (MAX - MIN) / 2).append(" points per hit. ");
 
-        if (Dungeon.hero.belongings.backpack.items.contains(this)) {
-            if (STR > Dungeon.hero.STR()) {
+        if (Dungeon.getInstance().hero.belongings.backpack.items.contains(this)) {
+            if (STR > Dungeon.getInstance().hero.STR()) {
                 info.append("Because of your inadequate strength the accuracy and speed " + "of your attack with this ").append(name).append(" is decreased.");
             }
-            if (STR < Dungeon.hero.STR()) {
+            if (STR < Dungeon.getInstance().hero.STR()) {
                 info.append("Because of your excess strength the damage " + "of your attack with this ").append(name).append(" is increased.");
             }
         }
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.getInstance().hero)) {
             info.append("\n\nYou hold the ").append(name).append(" at the ready.");
         }
 

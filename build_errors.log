@@ -1,0 +1,338 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.4/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+Configuration on demand is an incubating feature.
+> Task :PD-classes:compileJava UP-TO-DATE
+> Task :PD-classes:processResources NO-SOURCE
+> Task :PD-classes:classes UP-TO-DATE
+> Task :PD-classes:jar UP-TO-DATE
+
+> Task :core:compileJava
+/app/core/src/com/watabou/pixeldungeon/Badges.java:295: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.LEVEL_REACHED_1) && Dungeon.hero.lvl >= 6) {
+                                                             ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:299: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.LEVEL_REACHED_2) && Dungeon.hero.lvl >= 12) {
+                                                             ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:303: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.LEVEL_REACHED_3) && Dungeon.hero.lvl >= 18) {
+                                                             ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:307: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.LEVEL_REACHED_4) && Dungeon.hero.lvl >= 24) {
+                                                             ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:318: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.STRENGTH_ATTAINED_1) && Dungeon.hero.STR >= 13) {
+                                                                 ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:322: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.STRENGTH_ATTAINED_2) && Dungeon.hero.STR >= 15) {
+                                                                 ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:326: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.STRENGTH_ATTAINED_3) && Dungeon.hero.STR >= 17) {
+                                                                 ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:330: error: non-static variable hero cannot be referenced from a static context
+        if (!local.contains(Badge.STRENGTH_ATTAINED_4) && Dungeon.hero.STR >= 19) {
+                                                                 ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:428: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                   ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:428: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                                           ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:440: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                   ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:440: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                                           ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:452: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                   ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:452: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                                           ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:464: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                   ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:464: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && Dungeon.hero.isAlive() &&
+                                           ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:571: error: non-static variable depth cannot be referenced from a static context
+        Badge badge = switch (Dungeon.depth) {
+                                     ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:584: error: non-static variable hero cannot be referenced from a static context
+                badge = switch (Dungeon.hero.heroClass) {
+                                       ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:609: error: non-static variable hero cannot be referenced from a static context
+                switch (Dungeon.hero.subClass) {
+                               ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:665: error: non-static variable hero cannot be referenced from a static context
+        Badge badge = switch (Dungeon.hero.heroClass) {
+                                     ^
+/app/core/src/com/watabou/pixeldungeon/Badges.java:737: error: non-static variable hero cannot be referenced from a static context
+        badge = switch (Dungeon.hero.heroClass) {
+                               ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:103: error: non-static variable level cannot be referenced from a static context
+        Dungeon.level.drop(detachAll(hero.belongings.backpack), hero.pos).sprite.drop(hero.pos);
+               ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:131: error: non-static variable level cannot be referenced from a static context
+        Heap heap = Dungeon.level.drop(this, cell);
+                           ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:163: error: non-static variable hero cannot be referenced from a static context
+            if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+                       ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:163: error: non-static variable hero cannot be referenced from a static context
+            if (Dungeon.hero != null && Dungeon.hero.isAlive()) {
+                                               ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:181: error: non-static variable hero cannot be referenced from a static context
+        return collect(Dungeon.hero.belongings.backpack);
+                              ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:367: error: non-static variable quickslot cannot be referenced from a static context
+        if ((stackable && Dungeon.quickslot == getClass()) || Dungeon.quickslot == this) {
+                                 ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:367: error: non-static variable quickslot cannot be referenced from a static context
+        if ((stackable && Dungeon.quickslot == getClass()) || Dungeon.quickslot == this) {
+                                                                     ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:386: error: non-static variable quickslot cannot be referenced from a static context
+        if (this == Dungeon.quickslot) {
+                           ^
+/app/core/src/com/watabou/pixeldungeon/items/Item.java:407: error: non-static variable quickslot cannot be referenced from a static context
+            Dungeon.quickslot = this;
+                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:96: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && all.contains(Dungeon.hero)) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:96: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero != null && all.contains(Dungeon.hero)) {
+                                                        ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:114: error: non-static variable hero cannot be referenced from a static context
+        addDelayed(Dungeon.hero, -Float.MIN_VALUE);
+                          ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:116: error: non-static variable level cannot be referenced from a static context
+        for (Mob mob : Dungeon.level.mobs) {
+                              ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:120: error: non-static variable level cannot be referenced from a static context
+        for (Blob blob : Dungeon.level.blobs.values()) {
+                                ^
+/app/core/src/com/watabou/pixeldungeon/actors/Actor.java:166: error: non-static variable hero cannot be referenced from a static context
+                if (doNext && !Dungeon.hero.isAlive()) {
+                                      ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:94: error: non-static variable level cannot be referenced from a static context
+        Dungeon.level.updateFieldOfView(this);
+               ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:132: error: non-static variable visible cannot be referenced from a static context
+        boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
+                                      ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:132: error: non-static variable visible cannot be referenced from a static context
+        boolean visibleFight = Dungeon.visible[pos] || Dungeon.visible[enemy.pos];
+                                                              ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:155: error: non-static variable hero cannot be referenced from a static context
+            if (enemy == Dungeon.hero) {
+                                ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:156: error: non-static variable hero cannot be referenced from a static context
+                Dungeon.hero.interrupt();
+                       ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:163: error: non-static variable hero cannot be referenced from a static context
+                if (enemy == Dungeon.hero) {
+                                    ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:165: error: non-static variable hero cannot be referenced from a static context
+                    if (Dungeon.hero.killerGlyph != null) {
+                               ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:167: error: non-static method fail(String) cannot be referenced from a static context
+                        Dungeon.fail(Utils.format(ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth));
+                               ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:167: error: non-static variable depth cannot be referenced from a static context
+                        Dungeon.fail(Utils.format(ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth));
+                                                                                                                    ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:167: error: non-static variable hero cannot be referenced from a static context
+                        Dungeon.fail(Utils.format(ResultDescriptions.GLYPH, Dungeon.hero.killerGlyph.name(), Dungeon.depth));
+                                                                                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:168: error: non-static variable hero cannot be referenced from a static context
+                        GLog.n(TXT_KILL, Dungeon.hero.killerGlyph.name());
+                                                ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:172: error: non-static method fail(String) cannot be referenced from a static context
+                            Dungeon.fail(Utils.format(ResultDescriptions.BOSS, name, Dungeon.depth));
+                                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:172: error: non-static variable depth cannot be referenced from a static context
+                            Dungeon.fail(Utils.format(ResultDescriptions.BOSS, name, Dungeon.depth));
+                                                                                            ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:174: error: non-static method fail(String) cannot be referenced from a static context
+                            Dungeon.fail(Utils.format(ResultDescriptions.MOB,
+                                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:175: error: non-static variable depth cannot be referenced from a static context
+                                    Utils.indefinite(name), Dungeon.depth));
+                                                                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:193: error: non-static variable hero cannot be referenced from a static context
+                if (this == Dungeon.hero) {
+                                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:263: error: non-static variable visible cannot be referenced from a static context
+                if (Dungeon.visible[pos]) {
+                           ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:452: error: non-static variable level cannot be referenced from a static context
+        if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:458: error: non-static variable level cannot be referenced from a static context
+        if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
+                             ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:462: error: non-static variable hero cannot be referenced from a static context
+        if (this != Dungeon.hero) {
+                           ^
+/app/core/src/com/watabou/pixeldungeon/actors/Char.java:463: error: non-static variable visible cannot be referenced from a static context
+            sprite.visible = Dungeon.visible[pos];
+                                    ^
+/app/core/src/com/watabou/pixeldungeon/actors/hero/Hero.java:1122: error: non-static method observe() cannot be referenced from a static context
+        Dungeon.observe();
+               ^
+/app/core/src/com/watabou/pixeldungeon/actors/hero/Hero.java:1124: error: non-static variable hero cannot be referenced from a static context
+        Dungeon.hero.belongings.identify();
+               ^
+/app/core/src/com/watabou/pixeldungeon/actors/hero/Hero.java:1132: error: non-static variable hero cannot be referenced from a static context
+        Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+                                  ^
+/app/core/src/com/watabou/pixeldungeon/actors/hero/Hero.java:1153: error: non-static method observe() cannot be referenced from a static context
+        Dungeon.observe();
+               ^
+/app/core/src/com/watabou/pixeldungeon/items/potions/Potion.java:196: error: non-static variable hero cannot be referenced from a static context
+        if (Dungeon.hero.pos == cell) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/items/potions/Potion.java:198: error: non-static variable hero cannot be referenced from a static context
+            apply(Dungeon.hero);
+                         ^
+/app/core/src/com/watabou/pixeldungeon/items/potions/Potion.java:200: error: non-static variable level cannot be referenced from a static context
+        } else if (Dungeon.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
+                          ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/WaterOfHealth.java:52: error: non-static variable hero cannot be referenced from a static context
+        Dungeon.hero.interrupt();
+               ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/ToxicGas.java:37: error: non-static variable depth cannot be referenced from a static context
+        int levelDamage = 5 + Dungeon.depth * 5;
+                                     ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/ToxicGas.java:52: error: non-static variable level cannot be referenced from a static context
+        Blob blob = Dungeon.level.blobs.get(ParalyticGas.class);
+                           ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/ToxicGas.java:90: error: non-static method fail(String) cannot be referenced from a static context
+        Dungeon.fail(Utils.format(ResultDescriptions.GAS, Dungeon.depth));
+               ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/ToxicGas.java:90: error: non-static variable depth cannot be referenced from a static context
+        Dungeon.fail(Utils.format(ResultDescriptions.GAS, Dungeon.depth));
+                                                                 ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/Alchemy.java:48: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/Alchemy.java:61: error: non-static variable level cannot be referenced from a static context
+        Heap heap = Dungeon.level.heaps.get(cell);
+                           ^
+/app/core/src/com/watabou/pixeldungeon/actors/blobs/Alchemy.java:66: error: non-static variable level cannot be referenced from a static context
+                Dungeon.level.drop(result, cell).sprite.drop(cell);
+                       ^
+/app/core/src/com/watabou/pixeldungeon/Dungeon.java:490: error: cannot find symbol
+        } else if (WndResurrect.instance != null) {
+                   ^
+  symbol:   variable WndResurrect
+  location: class Dungeon
+/app/core/src/com/watabou/pixeldungeon/Dungeon.java:492: error: package WndResurrect does not exist
+            WndResurrect.instance.hide();
+                        ^
+/app/core/src/com/watabou/pixeldungeon/Dungeon.java:493: error: cannot find symbol
+            Hero.reallyDie(WndResurrect.causeOfDeath);
+                           ^
+  symbol:   variable WndResurrect
+  location: class Dungeon
+/app/core/src/com/watabou/pixeldungeon/Bones.java:46: error: non-static variable hero cannot be referenced from a static context
+                item = Dungeon.hero.belongings.weapon;
+                              ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:49: error: non-static variable hero cannot be referenced from a static context
+                item = Dungeon.hero.belongings.armor;
+                              ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:52: error: non-static variable hero cannot be referenced from a static context
+                item = Dungeon.hero.belongings.ring1;
+                              ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:55: error: non-static variable hero cannot be referenced from a static context
+                item = Dungeon.hero.belongings.ring2;
+                              ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:59: error: non-static variable gold cannot be referenced from a static context
+            if (Dungeon.gold > 0) {
+                       ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:60: error: non-static variable gold cannot be referenced from a static context
+                item = new Gold(Random.IntRange(1, Dungeon.gold));
+                                                          ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:66: error: non-static variable depth cannot be referenced from a static context
+        depth = Dungeon.depth;
+                       ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:99: error: non-static variable depth cannot be referenced from a static context
+            if (depth == Dungeon.depth) {
+                                ^
+/app/core/src/com/watabou/pixeldungeon/Bones.java:107: error: non-static variable depth cannot be referenced from a static context
+                        int lvl = (Dungeon.depth - 1) * 3 / 5 + 1;
+                                          ^
+/app/core/src/com/watabou/pixeldungeon/plants/Firebloom.java:45: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/plants/Icecap.java:46: error: non-static variable level cannot be referenced from a static context
+        Fire fire = (Fire) Dungeon.level.blobs.get(Fire.class);
+                                  ^
+/app/core/src/com/watabou/pixeldungeon/plants/Fadeleaf.java:57: error: non-static variable level cannot be referenced from a static context
+                newPos = Dungeon.level.randomRespawnCell();
+                                ^
+/app/core/src/com/watabou/pixeldungeon/plants/Fadeleaf.java:67: error: non-static variable visible cannot be referenced from a static context
+                ch.sprite.visible = Dungeon.visible[pos];
+                                           ^
+/app/core/src/com/watabou/pixeldungeon/plants/Fadeleaf.java:73: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/plants/Blindweed.java:50: error: non-static variable level cannot be referenced from a static context
+                ((Mob) ch).beckon(Dungeon.level.randomDestination());
+                                         ^
+/app/core/src/com/watabou/pixeldungeon/plants/Blindweed.java:54: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/plants/Earthroot.java:50: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/plants/Sungrass.java:48: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/plants/Sorrowmoss.java:44: error: non-static variable depth cannot be referenced from a static context
+            Buff.affect(ch, Poison.class).set(5 + Math.min(Dungeon.depth, 15));
+                                                                  ^
+/app/core/src/com/watabou/pixeldungeon/plants/Sorrowmoss.java:47: error: non-static variable visible cannot be referenced from a static context
+        if (Dungeon.visible[pos]) {
+                   ^
+/app/core/src/com/watabou/pixeldungeon/scenes/AmuletScene.java:69: error: non-static variable hero cannot be referenced from a static context
+                Dungeon.deleteGame(Dungeon.hero.heroClass, true);
+                                          ^
+/app/core/src/com/watabou/pixeldungeon/Rankings.java:52: error: non-static variable resultDescription cannot be referenced from a static context
+        rec.info = Dungeon.resultDescription;
+                          ^
+/app/core/src/com/watabou/pixeldungeon/Rankings.java:54: error: non-static variable hero cannot be referenced from a static context
+        rec.heroClass = Dungeon.hero.heroClass;
+                               ^
+/app/core/src/com/watabou/pixeldungeon/Rankings.java:55: error: non-static variable hero cannot be referenced from a static context
+        rec.armorTier = Dungeon.hero.tier();
+                               ^
+/app/core/src/com/watabou/pixeldungeon/Rankings.java:60: error: non-static method saveGame(String) cannot be referenced from a static context
+            Dungeon.saveGame(gameFile);
+                   ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+100 errors
+only showing the first 100 errors, of 364 total; use -Xmaxerrs if you would like to see more
+
+> Task :core:compileJava FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':core:compileJava'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.4/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 20s
+3 actionable tasks: 1 executed, 2 up-to-date

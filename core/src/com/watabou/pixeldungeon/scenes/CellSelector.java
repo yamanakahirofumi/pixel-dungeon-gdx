@@ -114,7 +114,7 @@ public class CellSelector extends TouchArea {
         }
 
         if (handled) {
-            Point point = DungeonTilemap.tileToPoint(Dungeon.hero.pos);
+            Point point = DungeonTilemap.tileToPoint(Dungeon.getInstance().hero.pos);
             point.x += x;
             point.y += y;
             select(DungeonTilemap.pointToTile(point));

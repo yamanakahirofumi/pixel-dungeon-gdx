@@ -66,7 +66,7 @@ public class LaboratoryPainter extends Painter {
         }
 
         entrance.set(Room.Door.Type.LOCKED);
-        level.addItemToSpawn(new IronKey(Dungeon.depth));
+        level.addItemToSpawn(new IronKey(Dungeon.getInstance().depth));
     }
 
     private static Item prize(Level level) {

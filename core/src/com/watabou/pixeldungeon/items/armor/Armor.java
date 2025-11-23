@@ -136,7 +136,7 @@ public class Armor extends EquipableItem {
             ((HeroSprite) hero.sprite).updateArmor();
 
             if (collect && !collect(hero.belongings.backpack)) {
-                Dungeon.level.drop(this, hero.pos);
+                Dungeon.getInstance().level.drop(this, hero.pos);
             }
 
             return true;
@@ -221,9 +221,9 @@ public class Armor extends EquipableItem {
             info.append("\n\nThis ").append(name).append(" provides damage absorption up to ")
                     .append(Math.max(DR, 0)).append(" points per attack. ");
 
-            if (STR > Dungeon.hero.STR()) {
+            if (STR > Dungeon.getInstance().hero.STR()) {
 
-                if (isEquipped(Dungeon.hero)) {
+                if (isEquipped(Dungeon.getInstance().hero)) {
                     info.append(
                             "\n\nBecause of your inadequate strength your " +
                             "movement speed and defense skill is decreased. ");
@@ -238,7 +238,7 @@ public class Armor extends EquipableItem {
             info.append("\n\nTypical ").append(name).append(" provides damage absorption up to ")
                     .append(typicalDR()).append(" points per attack ").append(" and requires ")
                     .append(typicalSTR()).append(" points of strength. ");
-            if (typicalSTR() > Dungeon.hero.STR()) {
+            if (typicalSTR() > Dungeon.getInstance().hero.STR()) {
                 info.append("Probably this armor is too heavy for you. ");
             }
         }
@@ -247,7 +247,7 @@ public class Armor extends EquipableItem {
             info.append("It is inscribed.");
         }
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.getInstance().hero)) {
             info.append("\n\nYou are wearing the ").append(name)
                     .append(cursed ? ", and because it is cursed, you are powerless to remove it." : ".");
         } else {

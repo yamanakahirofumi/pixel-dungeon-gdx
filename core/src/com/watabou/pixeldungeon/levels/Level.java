@@ -159,25 +159,25 @@ public abstract class Level implements Bundlable {
         blobs = new HashMap<>();
         plants = new SparseArray<>();
 
-        if (!Dungeon.bossLevel()) {
+        if (!Dungeon.bossLevel(Dungeon.getInstance().depth)) {
             addItemToSpawn(Generator.random(Generator.Category.FOOD));
-            if (Dungeon.posNeeded()) {
+            if (Dungeon.getInstance().posNeeded()) {
                 addItemToSpawn(new PotionOfStrength());
-                Dungeon.potionOfStrength++;
+                Dungeon.getInstance().potionOfStrength++;
             }
-            if (Dungeon.soeNeeded()) {
+            if (Dungeon.getInstance().soeNeeded()) {
                 addItemToSpawn(new ScrollOfUpgrade());
-                Dungeon.scrollsOfUpgrade++;
+                Dungeon.getInstance().scrollsOfUpgrade++;
             }
-            if (Dungeon.asNeeded()) {
+            if (Dungeon.getInstance().asNeeded()) {
                 addItemToSpawn(new Stylus());
-                Dungeon.arcaneStyli++;
+                Dungeon.getInstance().arcaneStyli++;
             }
 
-            if (Dungeon.depth > 1) {
+            if (Dungeon.getInstance().depth > 1) {
                 switch (Random.Int(10)) {
                     case 0:
-                        if (!Dungeon.bossLevel(Dungeon.depth + 1)) {
+                        if (!Dungeon.bossLevel(Dungeon.getInstance().depth + 1)) {
                             feeling = Feeling.CHASM;
                         }
                         break;
@@ -191,7 +191,7 @@ public abstract class Level implements Bundlable {
             }
         }
 
-        boolean pitNeeded = Dungeon.depth > 1 && weakFloorCreated;
+        boolean pitNeeded = Dungeon.getInstance().depth > 1 && weakFloorCreated;
 
         do {
             Arrays.fill(map, feeling == Feeling.CHASM ? Terrain.CHASM : Terrain.WALL);
@@ -364,17 +364,17 @@ public abstract class Level implements Bundlable {
             protected boolean act() {
                 if (mobs.size() < nMobs()) {
 
-                    Mob mob = Bestiary.mutable(Dungeon.depth);
+                    Mob mob = Bestiary.mutable(Dungeon.getInstance().depth);
                     mob.state = Mob.State.WANDERING;
                     mob.pos = randomRespawnCell();
-                    if (Dungeon.hero.isAlive() && mob.pos != -1) {
+                    if (Dungeon.getInstance().hero.isAlive() && mob.pos != -1) {
                         GameScene.add(mob);
                         if (Statistics.amuletObtained) {
-                            mob.beckon(Dungeon.hero.pos);
+                            mob.beckon(Dungeon.getInstance().hero.pos);
                         }
                     }
                 }
-                spend(Dungeon.nightMode || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN);
+                spend(Dungeon.getInstance().nightMode || Statistics.amuletObtained ? TIME_TO_RESPAWN / 2 : TIME_TO_RESPAWN);
                 return true;
             }
         };
@@ -384,7 +384,7 @@ public abstract class Level implements Bundlable {
         int cell;
         do {
             cell = Random.Int(LENGTH);
-        } while (!passable[cell] || Dungeon.visible[cell] || Actor.findChar(cell) != null);
+        } while (!passable[cell] || Dungeon.getInstance().visible[cell] || Actor.findChar(cell) != null);
         return cell;
     }
 
@@ -495,7 +495,7 @@ public abstract class Level implements Bundlable {
     }
 
     public static void set(int cell, int terrain) {
-        Painter.set(Dungeon.level, cell, terrain);
+        Painter.set(Dungeon.getInstance().level, cell, terrain);
 
         int flags = Terrain.flags[terrain];
         passable[cell] = (flags & Terrain.PASSABLE) != 0;
@@ -523,7 +523,7 @@ public abstract class Level implements Bundlable {
 
             heap = new Heap();
             heap.pos = cell;
-            if (map[cell] == Terrain.CHASM || (Dungeon.level != null && pit[cell])) {
+            if (map[cell] == Terrain.CHASM || (Dungeon.getInstance().level != null && pit[cell])) {
                 GameScene.discard(heap);
             } else {
                 heaps.put(cell, heap);
@@ -541,7 +541,7 @@ public abstract class Level implements Bundlable {
         }
         heap.drop(item);
 
-        if (Dungeon.level != null) {
+        if (Dungeon.getInstance().level != null) {
             press(cell, null);
         }
 
@@ -573,7 +573,7 @@ public abstract class Level implements Bundlable {
 
     public void press(int cell, Char ch) {
 
-        if (pit[cell] && ch == Dungeon.hero) {
+        if (pit[cell] && ch == Dungeon.getInstance().hero) {
             Chasm.heroFall(cell);
             return;
         }
@@ -659,8 +659,8 @@ public abstract class Level implements Bundlable {
 
         if (trap) {
             Sample.INSTANCE.play(Assets.SND_TRAP);
-            if (ch == Dungeon.hero) {
-                Dungeon.hero.interrupt();
+            if (ch == Dungeon.getInstance().hero) {
+                Dungeon.getInstance().hero.interrupt();
             }
             set(cell, Terrain.INACTIVE_TRAP);
             GameScene.updateMap(cell);
@@ -724,7 +724,7 @@ public abstract class Level implements Bundlable {
         }
 
         if (trap) {
-            if (Dungeon.visible[cell]) {
+            if (Dungeon.getInstance().visible[cell]) {
                 Sample.INSTANCE.play(Assets.SND_TRAP);
             }
             set(cell, Terrain.INACTIVE_TRAP);
@@ -788,7 +788,7 @@ public abstract class Level implements Bundlable {
                     fieldOfView[p + WIDTH] = true;
                     fieldOfView[p - WIDTH] = true;
                 }
-            } else if (c == Dungeon.hero && ((Hero) c).heroClass == HeroClass.HUNTRESS) {
+            } else if (c == Dungeon.getInstance().hero && ((Hero) c).heroClass == HeroClass.HUNTRESS) {
                 for (Mob mob : mobs) {
                     int p = mob.pos;
                     if (distance(c.pos, p) == 2) {

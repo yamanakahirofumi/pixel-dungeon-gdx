@@ -61,7 +61,7 @@ public class Gold extends Item {
     @Override
     public boolean doPickUp(Hero hero) {
 
-        Dungeon.gold += quantity;
+        Dungeon.getInstance().gold += quantity;
         Statistics.goldCollected += quantity;
         Badges.validateGoldCollected();
 
@@ -95,7 +95,7 @@ public class Gold extends Item {
 
     @Override
     public Item random() {
-        quantity = Random.Int(20 + Dungeon.depth * 10, 40 + Dungeon.depth * 20);
+        quantity = Random.Int(20 + Dungeon.getInstance().depth * 10, 40 + Dungeon.getInstance().depth * 20);
         return this;
     }
 

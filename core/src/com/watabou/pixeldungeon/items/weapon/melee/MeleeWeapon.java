@@ -94,7 +94,7 @@ public class MeleeWeapon extends Weapon {
             info.append("Its average damage is ").append(MIN + (MAX - MIN) / 2).append(" points per hit. ");
         } else {
             info.append("Its typical average damage is ").append(min() + (max() - min()) / 2).append(" points per hit ").append("and usually it requires ").append(typicalSTR()).append(" points of strength. ");
-            if (typicalSTR() > Dungeon.hero.STR()) {
+            if (typicalSTR() > Dungeon.getInstance().hero.STR()) {
                 info.append("Probably this weapon is too heavy for you. ");
             }
         }
@@ -118,18 +118,18 @@ public class MeleeWeapon extends Weapon {
             info.append("It is enchanted.");
         }
 
-        if (levelKnown && Dungeon.hero.belongings.backpack.items.contains(this)) {
-            if (STR > Dungeon.hero.STR()) {
+        if (levelKnown && Dungeon.getInstance().hero.belongings.backpack.items.contains(this)) {
+            if (STR > Dungeon.getInstance().hero.STR()) {
                 info.append(p);
                 info.append("Because of your inadequate strength the accuracy and speed " + "of your attack with this ").append(name).append(" is decreased.");
             }
-            if (STR < Dungeon.hero.STR()) {
+            if (STR < Dungeon.getInstance().hero.STR()) {
                 info.append(p);
                 info.append("Because of your excess strength the damage " + "of your attack with this ").append(name).append(" is increased.");
             }
         }
 
-        if (isEquipped(Dungeon.hero)) {
+        if (isEquipped(Dungeon.getInstance().hero)) {
             info.append(p);
             info.append("You hold the ").append(name).append(" at the ready").append(cursed ? ", and because it is cursed, you are powerless to let go." : ".");
         } else {

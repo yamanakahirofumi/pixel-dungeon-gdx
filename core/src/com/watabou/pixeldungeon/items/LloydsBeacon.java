@@ -100,7 +100,7 @@ public class LloydsBeacon extends Item {
 
         if (action.equals(AC_SET) || action.equals(AC_RETURN)) {
 
-            if (Dungeon.bossLevel()) {
+            if (Dungeon.getInstance().bossLevel()) {
                 hero.spend(LloydsBeacon.TIME_TO_USE);
                 GLog.w(TXT_PREVENTING);
                 return;
@@ -116,7 +116,7 @@ public class LloydsBeacon extends Item {
 
         if (action.equals(AC_SET)) {
 
-            returnDepth = Dungeon.depth;
+            returnDepth = Dungeon.getInstance().depth;
             returnPos = hero.pos;
 
             hero.spend(LloydsBeacon.TIME_TO_USE);
@@ -129,11 +129,11 @@ public class LloydsBeacon extends Item {
 
         } else if (action.equals(AC_RETURN)) {
 
-            if (returnDepth == Dungeon.depth) {
+            if (returnDepth == Dungeon.getInstance().depth) {
                 reset();
                 WandOfBlink.appear(hero, returnPos);
-                Dungeon.level.press(returnPos, hero);
-                Dungeon.observe();
+                Dungeon.getInstance().level.press(returnPos, hero);
+                Dungeon.getInstance().observe();
             } else {
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                 InterlevelScene.returnDepth = returnDepth;
