@@ -52,6 +52,7 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.pixeldungeon.utils.Utils;
+import com.watabou.pixeldungeon.windows.WndResurrect;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -146,7 +147,8 @@ public class Dungeon {
 
     public boolean nightMode;
 
-    public Dungeon() {}
+    public Dungeon() {
+    }
 
     public void init() {
 
@@ -486,13 +488,12 @@ public class Dungeon {
                     depth,
                     hero.lvl,
                     hero.belongings.armor != null ? hero.belongings.armor.tier : 0);
+        } else if (WndResurrect.instance != null) {
+
+            WndResurrect.instance.hide();
+            Hero.reallyDie(WndResurrect.causeOfDeath);
+
         }
-//        } else if (WndResurrect.instance != null) {
-//
-//            WndResurrect.instance.hide();
-//            Hero.reallyDie(WndResurrect.causeOfDeath);
-//
-//        }
     }
 
     public void loadGame(HeroClass cl) throws IOException {
