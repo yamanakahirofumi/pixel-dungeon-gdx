@@ -99,7 +99,7 @@ public class ShopPainter extends Painter {
 
         ArrayList<Item> items = new ArrayList<>();
 
-        switch (Dungeon.depth) {
+        switch (Dungeon.getInstance().depth) {
 
             case 6:
                 items.add((Random.Int(2) == 0 ? new Quarterstaff() : new Spear()).identify());

@@ -34,7 +34,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
     protected void evolve() {
         super.evolve();
 
-        int levelDamage = 5 + Dungeon.depth * 5;
+        int levelDamage = 5 + Dungeon.getInstance().depth * 5;
 
         Char ch;
         for (int i = 0; i < LENGTH; i++) {
@@ -49,7 +49,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
             }
         }
 
-        Blob blob = Dungeon.level.blobs.get(ParalyticGas.class);
+        Blob blob = Dungeon.getInstance().level.blobs.get(ParalyticGas.class);
         if (blob != null) {
 
             int[] par = blob.cur;
@@ -87,7 +87,7 @@ public class ToxicGas extends Blob implements Hero.Doom {
 
         Badges.validateDeathFromGas();
 
-        Dungeon.fail(Utils.format(ResultDescriptions.GAS, Dungeon.depth));
+        Dungeon.getInstance().fail(Utils.format(ResultDescriptions.GAS, Dungeon.getInstance().depth));
         GLog.n("You died from a toxic gas..");
     }
 }

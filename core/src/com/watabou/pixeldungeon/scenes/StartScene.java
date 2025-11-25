@@ -321,7 +321,7 @@ public class StartScene extends PixelScene {
 
     private void startNewGame() {
 
-        Dungeon.hero = null;
+        Dungeon.getInstance().hero = null;
         InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 
         if (PixelDungeon.intro()) {

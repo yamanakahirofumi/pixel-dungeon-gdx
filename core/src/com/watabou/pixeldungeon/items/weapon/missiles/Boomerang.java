@@ -93,7 +93,7 @@ public class Boomerang extends MissileWeapon {
 
     private void circleBack(int from, Hero owner) {
         if (!collect(curUser.belongings.backpack)) {
-            Dungeon.level.drop(this, owner.pos).sprite.drop();
+            Dungeon.getInstance().level.drop(this, owner.pos).sprite.drop();
         }
         ((MissileSprite) curUser.sprite.parent.recycle(MissileSprite.class)).
                 reset(from, curUser.pos, curItem, null);

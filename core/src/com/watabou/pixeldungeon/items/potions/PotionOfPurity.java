@@ -52,8 +52,8 @@ public class PotionOfPurity extends Potion {
         boolean procd = false;
 
         Blob[] blobs = {
-                Dungeon.level.blobs.get(ToxicGas.class),
-                Dungeon.level.blobs.get(ParalyticGas.class)
+                Dungeon.getInstance().level.blobs.get(ToxicGas.class),
+                Dungeon.getInstance().level.blobs.get(ParalyticGas.class)
         };
 
         for (Blob blob : blobs) {
@@ -79,7 +79,7 @@ public class PotionOfPurity extends Potion {
             }
         }
 
-        boolean heroAffected = PathFinder.distance[Dungeon.hero.pos] < Integer.MAX_VALUE;
+        boolean heroAffected = PathFinder.distance[Dungeon.getInstance().hero.pos] < Integer.MAX_VALUE;
 
         if (procd) {
 

@@ -51,7 +51,7 @@ public class WandOfLightning extends Wand {
         // The actual effect is processed in "fx" method
 
         if (!curUser.isAlive()) {
-            Dungeon.fail(Utils.format(ResultDescriptions.WAND, name, Dungeon.depth));
+            Dungeon.getInstance().fail(Utils.format(ResultDescriptions.WAND, name, Dungeon.getInstance().depth));
             GLog.n("You killed yourself with your own Wand of Lightning...");
         }
     }
@@ -62,7 +62,7 @@ public class WandOfLightning extends Wand {
             return;
         }
 
-        if (ch == Dungeon.hero) {
+        if (ch == Dungeon.getInstance().hero) {
             Camera.main.shake(2, 0.3f);
         }
 
@@ -91,7 +91,7 @@ public class WandOfLightning extends Wand {
     protected void fx(int cell, Callback callback) {
 
         nPoints = 0;
-        points[nPoints++] = Dungeon.hero.pos;
+        points[nPoints++] = Dungeon.getInstance().hero.pos;
 
         Char ch = Actor.findChar(cell);
         if (ch != null) {

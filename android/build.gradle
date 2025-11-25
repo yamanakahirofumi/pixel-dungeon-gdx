@@ -1,4 +1,5 @@
 android {
+    compileSdkVersion 34
     namespace "com.watabou.pixeldungeon"
     defaultConfig {
         applicationId appId

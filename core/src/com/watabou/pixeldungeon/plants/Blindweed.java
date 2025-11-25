@@ -47,11 +47,11 @@ public class Blindweed extends Plant {
             Buff.prolong(ch, Blindness.class, Random.Int(5, 10));
             if (ch instanceof Mob) {
                 ((Mob) ch).state = State.WANDERING;
-                ((Mob) ch).beckon(Dungeon.level.randomDestination());
+                ((Mob) ch).beckon(Dungeon.getInstance().level.randomDestination());
             }
         }
 
-        if (Dungeon.visible[pos]) {
+        if (Dungeon.getInstance().visible[pos]) {
             CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
         }
     }

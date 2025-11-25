@@ -40,7 +40,7 @@ public class SummoningTrap {
 
     public static void trigger(int pos, Char c) {
 
-        if (Dungeon.bossLevel()) {
+        if (Dungeon.getInstance().bossLevel()) {
             return;
         }
 
@@ -80,7 +80,7 @@ public class SummoningTrap {
         }
 
         for (Integer point : respawnPoints) {
-            Mob mob = Bestiary.mob(Dungeon.depth);
+            Mob mob = Bestiary.mob(Dungeon.getInstance().depth);
             mob.state = Mob.State.WANDERING;
             GameScene.add(mob, DELAY);
             WandOfBlink.appear(mob, point);

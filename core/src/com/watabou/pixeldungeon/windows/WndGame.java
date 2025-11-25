@@ -57,19 +57,19 @@ public class WndGame extends Window {
         });
 
         // Restart
-        if (!Dungeon.hero.isAlive()) {
+        if (!Dungeon.getInstance().hero.isAlive()) {
 
             RedButton btnStart;
             addButton(btnStart = new RedButton(TXT_START) {
                 @Override
                 protected void onClick() {
-                    Dungeon.hero = null;
+                    Dungeon.getInstance().hero = null;
                     InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
                     InterlevelScene.noStory = true;
                     Game.switchScene(InterlevelScene.class);
                 }
             });
-            btnStart.icon(Icons.get(Dungeon.hero.heroClass));
+            btnStart.icon(Icons.get(Dungeon.getInstance().hero.heroClass));
 
             addButton(new RedButton(TXT_RANKINGS) {
                 @Override
@@ -85,7 +85,7 @@ public class WndGame extends Window {
             @Override
             protected void onClick() {
                 try {
-                    Dungeon.saveAll();
+                    Dungeon.getInstance().saveAll();
                 } catch (IOException e) {
                     //
                 }

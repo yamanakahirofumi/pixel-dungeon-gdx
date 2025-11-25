@@ -115,7 +115,7 @@ public enum HeroClass {
             new TomeOfMastery().collect();
         }
 
-        Dungeon.quickslot = Dart.class;
+        Dungeon.getInstance().quickslot = Dart.class;
 
         new PotionOfStrength().setKnown();
     }
@@ -132,7 +132,7 @@ public enum HeroClass {
             new TomeOfMastery().collect();
         }
 
-        Dungeon.quickslot = wand;
+        Dungeon.getInstance().quickslot = wand;
 
         new ScrollOfIdentify().setKnown();
     }
@@ -150,7 +150,7 @@ public enum HeroClass {
             new TomeOfMastery().collect();
         }
 
-        Dungeon.quickslot = Dart.class;
+        Dungeon.getInstance().quickslot = Dart.class;
 
         new ScrollOfMagicMapping().setKnown();
     }
@@ -169,7 +169,7 @@ public enum HeroClass {
             new TomeOfMastery().collect();
         }
 
-        Dungeon.quickslot = boomerang;
+        Dungeon.getInstance().quickslot = boomerang;
     }
 
     public String title() {

@@ -179,7 +179,7 @@ public abstract class Mob extends Char {
                         spend(1 / speed());
                         return moveSprite(oldPos, pos);
                     } else {
-                        target = Dungeon.level.randomDestination();
+                        target = Dungeon.getInstance().level.randomDestination();
                         spend(TICK);
                     }
 
@@ -208,7 +208,7 @@ public abstract class Mob extends Char {
 
                         spend(TICK);
                         state = State.WANDERING;
-                        target = Dungeon.level.randomDestination();    // <--------
+                        target = Dungeon.getInstance().level.randomDestination();    // <--------
                         return true;
                     }
                 }
@@ -245,10 +245,10 @@ public abstract class Mob extends Char {
     protected Char chooseEnemy() {
 
         if (buff(Amok.class) != null) {
-            if (enemy == Dungeon.hero || enemy == null) {
+            if (enemy == Dungeon.getInstance().hero || enemy == null) {
 
                 HashSet<Mob> enemies = new HashSet<>();
-                for (Mob mob : Dungeon.level.mobs) {
+                for (Mob mob : Dungeon.getInstance().level.mobs) {
                     if (mob != this && Level.fieldOfView[mob.pos]) {
                         enemies.add(mob);
                     }
@@ -267,7 +267,7 @@ public abstract class Mob extends Char {
             return terror.source;
         }
 
-        return Dungeon.hero;
+        return Dungeon.getInstance().hero;
     }
 
     protected void nowhereToRun() {
@@ -275,7 +275,7 @@ public abstract class Mob extends Char {
 
     protected boolean moveSprite(int from, int to) {
 
-        if (sprite.isVisible() && (Dungeon.visible[from] || Dungeon.visible[to])) {
+        if (sprite.isVisible() && (Dungeon.getInstance().visible[from] || Dungeon.getInstance().visible[to])) {
             sprite.move(from, to);
             return false;
         } else {
@@ -350,7 +350,7 @@ public abstract class Mob extends Char {
         super.move(step);
 
         if (!flying) {
-            Dungeon.level.mobPress(this);
+            Dungeon.getInstance().level.mobPress(this);
         }
     }
 
@@ -360,7 +360,7 @@ public abstract class Mob extends Char {
 
     protected boolean doAttack(Char enemy) {
 
-        boolean visible = Dungeon.visible[pos];
+        boolean visible = Dungeon.getInstance().visible[pos];
 
         if (visible) {
             sprite.attack(enemy.pos);
@@ -386,7 +386,7 @@ public abstract class Mob extends Char {
 
     @Override
     public int defenseProc(Char enemy, int damage) {
-        if (!enemySeen && enemy == Dungeon.hero && ((Hero) enemy).subClass == HeroSubClass.ASSASSIN) {
+        if (!enemySeen && enemy == Dungeon.getInstance().hero && ((Hero) enemy).subClass == HeroSubClass.ASSASSIN) {
             damage += Random.Int(1, damage);
             Wound.hit(this);
         }
@@ -412,16 +412,16 @@ public abstract class Mob extends Char {
 
         super.destroy();
 
-        Dungeon.level.mobs.remove(this);
+        Dungeon.getInstance().level.mobs.remove(this);
 
-        if (Dungeon.hero.isAlive()) {
+        if (Dungeon.getInstance().hero.isAlive()) {
 
             if (hostile) {
                 Statistics.enemiesSlain++;
                 Badges.validateMonstersSlain();
                 Statistics.qualifiedForNoKilling = false;
 
-                if (Dungeon.nightMode) {
+                if (Dungeon.getInstance().nightMode) {
                     Statistics.nightHunt++;
                 } else {
                     Statistics.nightHunt = 0;
@@ -429,9 +429,9 @@ public abstract class Mob extends Char {
                 Badges.validateNightHunter();
             }
 
-            if (Dungeon.hero.lvl <= maxLvl && EXP > 0) {
-                Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, TXT_EXP, EXP);
-                Dungeon.hero.earnExp(EXP);
+            if (Dungeon.getInstance().hero.lvl <= maxLvl && EXP > 0) {
+                Dungeon.getInstance().hero.sprite.showStatus(CharSprite.POSITIVE, TXT_EXP, EXP);
+                Dungeon.getInstance().hero.earnExp(EXP);
             }
         }
     }
@@ -441,11 +441,11 @@ public abstract class Mob extends Char {
 
         super.die(cause);
 
-        if (Dungeon.hero.lvl <= maxLvl + 2) {
+        if (Dungeon.getInstance().hero.lvl <= maxLvl + 2) {
             dropLoot();
         }
 
-        if (Dungeon.hero.isAlive() && !Dungeon.visible[pos]) {
+        if (Dungeon.getInstance().hero.isAlive() && !Dungeon.getInstance().visible[pos]) {
             GLog.i(TXT_DIED);
         }
     }
@@ -470,7 +470,7 @@ public abstract class Mob extends Char {
                 item = (Item) loot;
 
             }
-            Dungeon.level.drop(item, pos).sprite.drop();
+            Dungeon.getInstance().level.drop(item, pos).sprite.drop();
         }
     }
 
@@ -511,13 +511,13 @@ public abstract class Mob extends Char {
         }
 
         protected void throwItem() {
-            Heap heap = Dungeon.level.heaps.get(pos);
+            Heap heap = Dungeon.getInstance().level.heaps.get(pos);
             if (heap != null) {
                 int n;
                 do {
                     n = pos + Level.NEIGHBOURS8[Random.Int(8)];
                 } while (!Level.passable[n] && !Level.avoid[n]);
-                Dungeon.level.drop(heap.pickUp(), n).sprite.drop(pos);
+                Dungeon.getInstance().level.drop(heap.pickUp(), n).sprite.drop(pos);
             }
         }
 

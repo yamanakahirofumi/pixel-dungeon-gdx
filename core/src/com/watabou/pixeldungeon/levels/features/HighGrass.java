@@ -67,6 +67,6 @@ public class HighGrass {
         }
 
         CellEmitter.get(pos).burst(LeafParticle.LEVEL_SPECIFIC, leaves);
-        Dungeon.observe();
+        Dungeon.getInstance().observe();
     }
 }

@@ -66,6 +66,20 @@ import java.util.HashSet;
 
 public class Dungeon {
 
+    private static Dungeon instance;
+
+    public static Dungeon getInstance() {
+        if (instance == null) {
+            instance = new Dungeon();
+        }
+        return instance;
+    }
+
+    public static void setInstance(Dungeon dungeon) {
+        instance = dungeon;
+    }
+
+
     private static final String NO_TIPS = "The text  is indecipherable...";
     private static final String[] TIPS = {
             "Don't overestimate your strength, use weapons and armor you can handle.",
@@ -108,32 +122,35 @@ public class Dungeon {
     private static final String TXT_DEAD_END =
             "What are you doing here?!";
 
-    public static int potionOfStrength;
-    public static int scrollsOfUpgrade;
-    public static int arcaneStyli;
-    public static boolean dewVial;        // true if the dew vial can be spawned
-    public static int transmutation;    // depth number for a well of transmutation
+    public int potionOfStrength;
+    public int scrollsOfUpgrade;
+    public int arcaneStyli;
+    public boolean dewVial;        // true if the dew vial can be spawned
+    public int transmutation;    // depth number for a well of transmutation
 
 
-    public static Hero hero;
-    public static Level level;
+    public Hero hero;
+    public Level level;
 
     // Either Item or Class<? extends Item>
-    public static Object quickslot;
+    public Object quickslot;
 
-    public static int depth;
-    public static int gold;
+    public int depth;
+    public int gold;
     // Reason of death
-    public static String resultDescription;
+    public String resultDescription;
 
-    public static HashSet<Integer> chapters;
+    public HashSet<Integer> chapters;
 
     // Hero's field of view
-    public static boolean[] visible = new boolean[Level.LENGTH];
+    public boolean[] visible = new boolean[Level.LENGTH];
 
-    public static boolean nightMode;
+    public boolean nightMode;
 
-    public static void init() {
+    public Dungeon() {
+    }
+
+    public void init() {
 
         Actor.clear();
 
@@ -173,9 +190,9 @@ public class Dungeon {
         StartScene.curClass.initHero(hero);
     }
 
-    public static Level newLevel() {
+    public Level newLevel() {
 
-        Dungeon.level = null;
+        this.level = null;
         Actor.clear();
 
         depth++;
@@ -251,7 +268,7 @@ public class Dungeon {
         return level;
     }
 
-    public static void resetLevel() {
+    public void resetLevel() {
 
         Actor.clear();
 
@@ -261,7 +278,7 @@ public class Dungeon {
         switchLevel(level, level.entrance);
     }
 
-    public static String tip() {
+    public String tip() {
 
         if (level instanceof DeadEndLevel) {
 
@@ -279,11 +296,11 @@ public class Dungeon {
         }
     }
 
-    public static boolean shopOnLevel() {
+    public boolean shopOnLevel() {
         return depth == 6 || depth == 11 || depth == 16;
     }
 
-    public static boolean bossLevel() {
+    public boolean bossLevel() {
         return bossLevel(depth);
     }
 
@@ -292,11 +309,11 @@ public class Dungeon {
     }
 
     @SuppressWarnings("deprecation")
-    public static void switchLevel(final Level level, int pos) {
+    public void switchLevel(final Level level, int pos) {
 
         nightMode = new Date().getHours() < 7;
 
-        Dungeon.level = level;
+        this.level = level;
         Actor.init();
 
         Actor respawner = level.respawner();
@@ -312,17 +329,17 @@ public class Dungeon {
         observe();
     }
 
-    public static boolean posNeeded() {
+    public boolean posNeeded() {
         int[] quota = {4, 2, 9, 4, 14, 6, 19, 8, 24, 9};
         return chance(quota, potionOfStrength);
     }
 
-    public static boolean soeNeeded() {
+    public boolean soeNeeded() {
         int[] quota = {5, 3, 10, 6, 15, 9, 20, 12, 25, 13};
         return chance(quota, scrollsOfUpgrade);
     }
 
-    private static boolean chance(int[] quota, int number) {
+    private boolean chance(int[] quota, int number) {
 
         for (int i = 0; i < quota.length; i += 2) {
             int qDepth = quota[i];
@@ -335,7 +352,7 @@ public class Dungeon {
         return false;
     }
 
-    public static boolean asNeeded() {
+    public boolean asNeeded() {
         return Random.Int(12 * (1 + arcaneStyli)) < depth;
     }
 
@@ -367,24 +384,32 @@ public class Dungeon {
     private static final String BADGES = "badges";
 
     public static String gameFile(HeroClass cl) {
-        return switch (cl) {
-            case WARRIOR -> WR_GAME_FILE;
-            case MAGE -> MG_GAME_FILE;
-            case HUNTRESS -> RN_GAME_FILE;
-            default -> RG_GAME_FILE;
-        };
+        switch (cl) {
+            case WARRIOR:
+                return WR_GAME_FILE;
+            case MAGE:
+                return MG_GAME_FILE;
+            case HUNTRESS:
+                return RN_GAME_FILE;
+            default:
+                return RG_GAME_FILE;
+        }
     }
 
     private static String depthFile(HeroClass cl) {
-        return switch (cl) {
-            case WARRIOR -> WR_DEPTH_FILE;
-            case MAGE -> MG_DEPTH_FILE;
-            case HUNTRESS -> RN_DEPTH_FILE;
-            default -> RG_DEPTH_FILE;
-        };
+        switch (cl) {
+            case WARRIOR:
+                return WR_DEPTH_FILE;
+            case MAGE:
+                return MG_DEPTH_FILE;
+            case HUNTRESS:
+                return RN_DEPTH_FILE;
+            default:
+                return RG_DEPTH_FILE;
+        }
     }
 
-    public static void saveGame(String fileName) throws IOException {
+    public void saveGame(String fileName) throws IOException {
         try {
             Bundle bundle = new Bundle();
 
@@ -441,7 +466,7 @@ public class Dungeon {
         }
     }
 
-    public static void saveLevel() throws IOException {
+    public void saveLevel() throws IOException {
         Bundle bundle = new Bundle();
         bundle.put(LEVEL, level);
 
@@ -451,7 +476,7 @@ public class Dungeon {
         output.close();
     }
 
-    public static void saveAll() throws IOException {
+    public void saveAll() throws IOException {
         if (hero.isAlive()) {
 
             Actor.fixTime();
@@ -463,7 +488,6 @@ public class Dungeon {
                     depth,
                     hero.lvl,
                     hero.belongings.armor != null ? hero.belongings.armor.tier : 0);
-
         } else if (WndResurrect.instance != null) {
 
             WndResurrect.instance.hide();
@@ -472,20 +496,20 @@ public class Dungeon {
         }
     }
 
-    public static void loadGame(HeroClass cl) throws IOException {
+    public void loadGame(HeroClass cl) throws IOException {
         loadGame(gameFile(cl), true);
     }
 
-    public static void loadGame(String fileName) throws IOException {
+    public void loadGame(String fileName) throws IOException {
         loadGame(fileName, false);
     }
 
-    public static void loadGame(String fileName, boolean fullLoad) throws IOException {
+    public void loadGame(String fileName, boolean fullLoad) throws IOException {
 
         Bundle bundle = gameBundle(fileName);
 
-        Dungeon.level = null;
-        Dungeon.depth = -1;
+        this.level = null;
+        this.depth = -1;
 
         if (fullLoad) {
             PathFinder.setMapSize(Level.WIDTH, Level.HEIGHT);
@@ -557,9 +581,9 @@ public class Dungeon {
         Journal.restoreFromBundle(bundle);
     }
 
-    public static Level loadLevel(HeroClass cl) throws IOException {
+    public Level loadLevel(HeroClass cl) throws IOException {
 
-        Dungeon.level = null;
+        this.level = null;
         Actor.clear();
 
         InputStream input = Game.instance.openFileInput(Utils.format(depthFile(cl), depth));
@@ -600,19 +624,19 @@ public class Dungeon {
         Hero.preview(info, bundle.getBundle(HERO));
     }
 
-    public static void fail(String desc) {
+    public void fail(String desc) {
         resultDescription = desc;
         if (hero.belongings.getItem(Ankh.class) == null) {
             Rankings.INSTANCE.submit(false);
         }
     }
 
-    public static void win(String desc) {
+    public void win(String desc) {
         resultDescription = desc;
         Rankings.INSTANCE.submit(true);
     }
 
-    public static void observe() {
+    public void observe() {
 
         if (level == null) {
             return;

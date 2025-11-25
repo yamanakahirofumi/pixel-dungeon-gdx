@@ -88,7 +88,7 @@ public class KindOfWeapon extends EquipableItem {
         hero.spendAndNext(TIME_TO_EQUIP);
 
         if (collect && !collect(hero.belongings.backpack)) {
-            Dungeon.level.drop(this, hero.pos);
+            Dungeon.getInstance().level.drop(this, hero.pos);
         }
 
         return true;
