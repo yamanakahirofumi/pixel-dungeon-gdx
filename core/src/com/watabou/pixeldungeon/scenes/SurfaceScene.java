@@ -83,7 +83,7 @@ public class SurfaceScene extends PixelScene {
         window.camera = viewport;
         add(window);
 
-        boolean dayTime = !Dungeon.nightMode;
+        boolean dayTime = !Dungeon.getInstance().nightMode;
 
         Sky sky = new Sky(dayTime);
         sky.scale.set(WIDTH, HEIGHT);
@@ -114,7 +114,7 @@ public class SurfaceScene extends PixelScene {
             window.add(patch);
         }
 
-        Avatar a = new Avatar(Dungeon.hero.heroClass);
+        Avatar a = new Avatar(Dungeon.getInstance().hero.heroClass);
         // Removing semitransparent contour
         a.am = 2;
         a.aa = -1;

@@ -149,7 +149,7 @@ public class CavesLevel extends RegularLevel {
             }
         }
 
-        if (Dungeon.bossLevel(Dungeon.depth + 1)) {
+        if (Dungeon.bossLevel(Dungeon.getInstance().depth + 1)) {
             return;
         }
 
@@ -235,7 +235,7 @@ public class CavesLevel extends RegularLevel {
         @Override
         public void update() {
 
-            if (visible = Dungeon.visible[pos]) {
+            if (visible = Dungeon.getInstance().visible[pos]) {
 
                 super.update();
 
