@@ -188,6 +188,11 @@ public abstract class Game implements ApplicationListener {
         instance.requestedReset = true;
     }
 
+    public static void switchScene(Scene scene) {
+        instance.requestedScene = scene;
+        instance.requestedReset = true;
+    }
+
     public static Scene scene() {
         return instance.scene;
     }

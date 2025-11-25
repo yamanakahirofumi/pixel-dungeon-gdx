@@ -82,7 +82,15 @@ import com.watabou.utils.Random;
 
 import java.io.IOException;
 
+import com.watabou.pixeldungeon.Dungeon;
+
 public class GameScene extends PixelScene {
+
+    private final Dungeon dungeon;
+
+    public GameScene(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
 
     private static final String TXT_WELCOME = "Welcome to the level %d of Pixel Dungeon!";
     private static final String TXT_WELCOME_BACK = "Welcome back to the level %d of Pixel Dungeon!";
@@ -127,7 +135,7 @@ public class GameScene extends PixelScene {
         Music.INSTANCE.play(Assets.TUNE, true);
         Music.INSTANCE.volume(1f);
 
-        PixelDungeon.lastClass(Dungeon.getInstance().hero.heroClass.ordinal());
+        PixelDungeon.lastClass(this.dungeon.hero.heroClass.ordinal());
 
         super.create();
         Camera.main.zoom(defaultZoom + PixelDungeon.zoom());
@@ -140,7 +148,7 @@ public class GameScene extends PixelScene {
         water = new SkinnedBlock(
                 Level.WIDTH * DungeonTilemap.SIZE,
                 Level.HEIGHT * DungeonTilemap.SIZE,
-                Dungeon.getInstance().level.waterTex());
+                this.dungeon.level.waterTex());
         terrain.add(water);
 
         ripples = new Group();
@@ -149,19 +157,19 @@ public class GameScene extends PixelScene {
         tiles = new DungeonTilemap();
         terrain.add(tiles);
 
-        Dungeon.getInstance().level.addVisuals(this);
+        this.dungeon.level.addVisuals(this);
 
         plants = new Group();
         add(plants);
 
-        for (IntMap.Entry<Plant> plant : Dungeon.getInstance().level.plants) {
+        for (IntMap.Entry<Plant> plant : this.dungeon.level.plants) {
             addPlantSprite(plant.value);
         }
 
         heaps = new Group();
         add(heaps);
 
-        for (IntMap.Entry<Heap> heap : Dungeon.getInstance().level.heaps) {
+        for (IntMap.Entry<Heap> heap : this.dungeon.level.heaps) {
             addHeapSprite(heap.value);
         }
 
@@ -172,10 +180,10 @@ public class GameScene extends PixelScene {
         mobs = new Group();
         add(mobs);
 
-        for (Mob mob : Dungeon.getInstance().level.mobs) {
+        for (Mob mob : this.dungeon.level.mobs) {
             addMobSprite(mob);
             if (Statistics.amuletObtained) {
-                mob.beckon(Dungeon.getInstance().hero.pos);
+                mob.beckon(this.dungeon.hero.pos);
             }
         }
 
@@ -185,13 +193,13 @@ public class GameScene extends PixelScene {
         gases = new Group();
         add(gases);
 
-        for (Blob blob : Dungeon.getInstance().level.blobs.values()) {
+        for (Blob blob : this.dungeon.level.blobs.values()) {
             blob.emitter = null;
             addBlobSprite(blob);
         }
 
         fog = new FogOfWar(Level.WIDTH, Level.HEIGHT);
-        fog.updateVisibility(Dungeon.getInstance().visible, Dungeon.getInstance().level.visited, Dungeon.getInstance().level.mapped);
+        fog.updateVisibility(this.dungeon.visible, this.dungeon.level.visited, this.dungeon.level.mapped);
         add(fog);
 
         brightness(PixelDungeon.brightness());
@@ -205,7 +213,7 @@ public class GameScene extends PixelScene {
         add(emoicons);
 
         hero = new HeroSprite();
-        hero.place(Dungeon.getInstance().hero.pos);
+        hero.place(this.dungeon.hero.pos);
         hero.updateArmor();
         mobs.add(hero);
 
@@ -235,13 +243,13 @@ public class GameScene extends PixelScene {
         log.setRect(0, toolbar.top(), attack.left(), 0);
         add(log);
 
-        if (Dungeon.getInstance().depth < Statistics.deepestFloor) {
-            GLog.i(TXT_WELCOME_BACK, Dungeon.getInstance().depth);
+        if (this.dungeon.depth < Statistics.deepestFloor) {
+            GLog.i(TXT_WELCOME_BACK, this.dungeon.depth);
         } else {
-            GLog.i(TXT_WELCOME, Dungeon.getInstance().depth);
+            GLog.i(TXT_WELCOME, this.dungeon.depth);
             Sample.INSTANCE.play(Assets.SND_DESCEND);
         }
-        switch (Dungeon.getInstance().level.feeling) {
+        switch (this.dungeon.level.feeling) {
             case CHASM:
                 GLog.w(TXT_CHASM);
                 break;
@@ -253,11 +261,11 @@ public class GameScene extends PixelScene {
                 break;
             default:
         }
-        if (Dungeon.getInstance().level instanceof RegularLevel &&
-            ((RegularLevel) Dungeon.getInstance().level).secretDoors > Random.IntRange(3, 4)) {
+        if (this.dungeon.level instanceof RegularLevel &&
+            ((RegularLevel) this.dungeon.level).secretDoors > Random.IntRange(3, 4)) {
             GLog.w(TXT_SECRETS);
         }
-        if (Dungeon.getInstance().nightMode && !Dungeon.getInstance().bossLevel()) {
+        if (this.dungeon.nightMode && !this.dungeon.bossLevel()) {
             GLog.w(TXT_NIGHT_MODE);
         }
 
@@ -269,17 +277,17 @@ public class GameScene extends PixelScene {
 
         switch (InterlevelScene.mode) {
             case RESURRECT:
-                WandOfBlink.appear(Dungeon.getInstance().hero, Dungeon.getInstance().level.entrance);
+                WandOfBlink.appear(this.dungeon.hero, this.dungeon.level.entrance);
                 new Flare(8, 32).color(0xFFFF66, true).show(hero, 2f);
                 break;
             case RETURN:
-                WandOfBlink.appear(Dungeon.getInstance().hero, Dungeon.getInstance().hero.pos);
+                WandOfBlink.appear(this.dungeon.hero, this.dungeon.hero.pos);
                 break;
             case FALL:
                 Chasm.heroLand();
                 break;
             case DESCEND:
-                switch (Dungeon.getInstance().depth) {
+                switch (this.dungeon.depth) {
                     case 1:
                         WndStory.showChapter(WndStory.ID_SEWERS);
                         break;
@@ -296,7 +304,7 @@ public class GameScene extends PixelScene {
                         WndStory.showChapter(WndStory.ID_HALLS);
                         break;
                 }
-                if (Dungeon.getInstance().hero.isAlive() && Dungeon.getInstance().depth != 22) {
+                if (this.dungeon.hero.isAlive() && this.dungeon.depth != 22) {
                     Badges.validateNoKilling();
                 }
                 break;
@@ -320,7 +328,7 @@ public class GameScene extends PixelScene {
     @Override
     public synchronized void pause() {
         try {
-            Dungeon.getInstance().saveAll();
+            this.dungeon.saveAll();
             Badges.saveGlobal();
         } catch (IOException e) {
             //
@@ -329,7 +337,7 @@ public class GameScene extends PixelScene {
 
     @Override
     public synchronized void update() {
-        if (Dungeon.getInstance().hero == null) {
+        if (this.dungeon.hero == null) {
             return;
         }
 
@@ -339,11 +347,11 @@ public class GameScene extends PixelScene {
 
         Actor.process();
 
-        if (Dungeon.getInstance().hero.ready && !Dungeon.getInstance().hero.paralysed) {
+        if (this.dungeon.hero.ready && !this.dungeon.hero.paralysed) {
             log.newLine();
         }
 
-        cellSelector.enabled = Dungeon.getInstance().hero.ready;
+        cellSelector.enabled = this.dungeon.hero.ready;
     }
 
     @Override
@@ -355,7 +363,7 @@ public class GameScene extends PixelScene {
 
     @Override
     protected void onMenuPressed() {
-        if (Dungeon.getInstance().hero.ready) {
+        if (this.dungeon.hero.ready) {
             selectItem(null, WndBag.Mode.ALL, null);
         }
     }
@@ -399,7 +407,7 @@ public class GameScene extends PixelScene {
 
     private void addMobSprite(Mob mob) {
         CharSprite sprite = mob.sprite();
-        sprite.visible = Dungeon.getInstance().visible[mob.pos];
+        sprite.visible = this.dungeon.visible[mob.pos];
         mobs.add(sprite);
         sprite.link(mob);
     }
@@ -459,14 +467,14 @@ public class GameScene extends PixelScene {
     }
 
     public static void add(Mob mob) {
-        Dungeon.getInstance().level.mobs.add(mob);
+        scene.dungeon.level.mobs.add(mob);
         Actor.add(mob);
         Actor.occupyCell(mob);
         scene.addMobSprite(mob);
     }
 
     public static void add(Mob mob, float delay) {
-        Dungeon.getInstance().level.mobs.add(mob);
+        scene.dungeon.level.mobs.add(mob);
         Actor.addDelayed(mob, delay);
         Actor.occupyCell(mob);
         scene.addMobSprite(mob);
@@ -533,10 +541,10 @@ public class GameScene extends PixelScene {
 
     public static void afterObserve() {
         if (scene != null) {
-            scene.fog.updateVisibility(Dungeon.getInstance().visible, Dungeon.getInstance().level.visited, Dungeon.getInstance().level.mapped);
+            scene.fog.updateVisibility(scene.dungeon.visible, scene.dungeon.level.visited, scene.dungeon.level.mapped);
 
-            for (Mob mob : Dungeon.getInstance().level.mobs) {
-                mob.sprite.visible = Dungeon.getInstance().visible[mob.pos];
+            for (Mob mob : scene.dungeon.level.mobs) {
+                mob.sprite.visible = scene.dungeon.visible[mob.pos];
             }
         }
     }
@@ -554,7 +562,7 @@ public class GameScene extends PixelScene {
     }
 
     public static void bossSlain() {
-        if (Dungeon.getInstance().hero.isAlive()) {
+        if (scene.dungeon.hero.isAlive()) {
             Banner bossSlain = new Banner(BannerSprites.get(BannerSprites.Type.BOSS_SLAIN));
             bossSlain.show(0xFFFFFF, 0.3f, 5f);
             scene.showBanner(bossSlain);
@@ -593,10 +601,10 @@ public class GameScene extends PixelScene {
     }
 
     static boolean cancel() {
-        if (Dungeon.getInstance().hero.curAction != null || Dungeon.getInstance().hero.restoreHealth) {
+        if (scene.dungeon.hero.curAction != null || scene.dungeon.hero.restoreHealth) {
 
-            Dungeon.getInstance().hero.curAction = null;
-            Dungeon.getInstance().hero.restoreHealth = false;
+            scene.dungeon.hero.curAction = null;
+            scene.dungeon.hero.restoreHealth = false;
             return true;
 
         } else {
@@ -616,17 +624,17 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        if (cell < 0 || cell > Level.LENGTH || (!Dungeon.getInstance().level.visited[cell] && !Dungeon.getInstance().level.mapped[cell])) {
+        if (cell < 0 || cell > Level.LENGTH || (!scene.dungeon.level.visited[cell] && !scene.dungeon.level.mapped[cell])) {
             GameScene.show(new WndMessage("You don't know what is there."));
             return;
         }
 
-        if (!Dungeon.getInstance().visible[cell]) {
+        if (!scene.dungeon.visible[cell]) {
             GameScene.show(new WndInfoCell(cell));
             return;
         }
 
-        if (cell == Dungeon.getInstance().hero.pos) {
+        if (cell == scene.dungeon.hero.pos) {
             GameScene.show(new WndHero());
             return;
         }
@@ -637,7 +645,7 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        Heap heap = Dungeon.getInstance().level.heaps.get(cell);
+        Heap heap = scene.dungeon.level.heaps.get(cell);
         if (heap != null) {
             if (heap.type == Heap.Type.FOR_SALE && heap.size() == 1 && heap.peek().price() > 0) {
                 GameScene.show(new WndTradeItem(heap, false));
@@ -647,7 +655,7 @@ public class GameScene extends PixelScene {
             return;
         }
 
-        Plant plant = Dungeon.getInstance().level.plants.get(cell);
+        Plant plant = scene.dungeon.level.plants.get(cell);
         if (plant != null) {
             GameScene.show(new WndInfoPlant(plant));
             return;
@@ -663,7 +671,7 @@ public class GameScene extends PixelScene {
                 if (PDInputProcessor.modifier) {
                     examineCell(cell);
                 } else {
-                    Dungeon.getInstance().hero.handle(cell);
+                    scene.dungeon.hero.handle(cell);
                 }
             }
         }

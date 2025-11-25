@@ -67,15 +67,12 @@ public class Dungeon {
 
     private static Dungeon instance;
 
-    public static Dungeon getInstance() {
-        if (instance == null) {
-            instance = new Dungeon();
-        }
-        return instance;
-    }
-
     public static void setInstance(Dungeon dungeon) {
         instance = dungeon;
+    }
+
+    public static Dungeon getInstance() {
+        return instance;
     }
 
 
@@ -146,10 +143,7 @@ public class Dungeon {
 
     public boolean nightMode;
 
-    public Dungeon() {}
-
-    public void init() {
-
+    public Dungeon() {
         Actor.clear();
 
         PathFinder.setMapSize(Level.WIDTH, Level.HEIGHT);
