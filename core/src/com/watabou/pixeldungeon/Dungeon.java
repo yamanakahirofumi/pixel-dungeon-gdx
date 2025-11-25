@@ -486,13 +486,13 @@ public class Dungeon {
                     depth,
                     hero.lvl,
                     hero.belongings.armor != null ? hero.belongings.armor.tier : 0);
-
-        } else if (WndResurrect.instance != null) {
-
-            WndResurrect.instance.hide();
-            Hero.reallyDie(WndResurrect.causeOfDeath);
-
         }
+//        } else if (WndResurrect.instance != null) {
+//
+//            WndResurrect.instance.hide();
+//            Hero.reallyDie(WndResurrect.causeOfDeath);
+//
+//        }
     }
 
     public void loadGame(HeroClass cl) throws IOException {
